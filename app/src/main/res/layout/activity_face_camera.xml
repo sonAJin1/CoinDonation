@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/topLayout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true">
+
+
+    <com.example.sonaj.coindonation.FaceCamera.camera.CameraSourcePreview
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.example.sonaj.coindonation.FaceCamera.camera.GraphicOverlay
+            android:id="@+id/faceOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.example.sonaj.coindonation.FaceCamera.camera.CameraSourcePreview>
+
+    <ImageButton
+        android:id="@+id/flipButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:padding="10dp"
+        android:src="@drawable/ic_sync_black_24dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rc_face_mask"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        android:background="@color/recyclerViewBackground"
+        android:layout_above="@+id/ll_camera_button">
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/ll_camera_button"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:background="@color/black">
+
+        <Button
+            android:id="@+id/btn_back_preview"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="다시찍기"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/btn_capture_complete"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:text="확인"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/btn_capture"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_capture"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+</RelativeLayout>

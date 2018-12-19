@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="220dp">
+
+        <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/wallet_icon"/>
+
+        <ImageButton
+            android:id="@+id/btn_wallet_setting_cancel"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_close_black_24dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            />
+
+    </RelativeLayout>
+    <EditText
+        android:id="@+id/et_wallet_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        />
+    <EditText
+        android:id="@+id/et_wallet_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+       />
+    <Button
+        android:id="@+id/btn_create_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="지갑 만들기"
+        android:background="@color/white"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btn_get_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="지갑 가져오기"
+        android:background="@color/white"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/btn_wallet_ok"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="확인"
+        android:background="@color/white"
+        android:layout_margin="10dp"
+        android:visibility="gone"/>
+
+</LinearLayout>

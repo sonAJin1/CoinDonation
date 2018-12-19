@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="onClick" type="com.example.sonaj.coindonation.Main.MainActivity.OnClick"/>
+    </data>
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--맨처음 화면 (default 화면)-->
+    <include
+    android:id="@+id/view_first"
+    layout="@layout/first_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+    <!-- 초인 지갑 화면 -->
+    <include
+    android:id="@+id/view_wallet"
+    layout="@layout/coin_wallet_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" />
+
+
+</android.support.constraint.ConstraintLayout>
+</layout>
