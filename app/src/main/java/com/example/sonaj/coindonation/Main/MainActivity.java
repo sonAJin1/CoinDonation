@@ -17,10 +17,8 @@ import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 
-import com.example.sonaj.coindonation.CoinWallet.CoinWalletActivity;
 import com.example.sonaj.coindonation.CoinWallet.CoinWalletView;
 import com.example.sonaj.coindonation.Data.DBHelper;
 import com.example.sonaj.coindonation.R;

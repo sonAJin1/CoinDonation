@@ -10,6 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.sonaj.coindonation.CoinWallet.callback.CBBip44;
+import com.example.sonaj.coindonation.CoinWallet.callback.CBGetCredential;
+import com.example.sonaj.coindonation.CoinWallet.callback.CBLoadSmartContract;
+import com.example.sonaj.coindonation.CoinWallet.callback.CBSendingEther;
 import com.example.sonaj.coindonation.Data.DBHelper;
 import com.example.sonaj.coindonation.Util.BaseView;
 import com.example.sonaj.coindonation.Util.WalletSettingListener;

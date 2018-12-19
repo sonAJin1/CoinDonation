@@ -23,7 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CoinWallet.CoinWalletActivity" />
         <activity android:name=".FaceCamera.FaceActivity"></activity>
         <provider
             android:authorities="com.example.sonaj.coindonation.fileprovider"

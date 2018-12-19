@@ -32,12 +32,18 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
-    /**web3 라이브러리*/
-    implementation 'org.web3j:core:3.3.1-android'
     /**얼굴인식 카메라 google vision*/
     implementation 'com.google.android.gms:play-services-vision:10.2.0'
     /**QR CORD 관련 라이브러리*/
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+    /**지갑 라이브러리*/
+    implementation 'org.web3j:core:3.3.1-android'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation 'com.googlecode.json-simple:json-simple:1.1'
+    implementation 'com.google.zxing:core:3.3.2'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+    implementation 'org.bitcoinj:bitcoinj-core:0.14.7'
+//    implementation project(path: ':librarysdkew')
+
 
 }
