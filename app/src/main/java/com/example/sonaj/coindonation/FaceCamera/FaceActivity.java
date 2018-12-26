@@ -68,6 +68,7 @@ import android.widget.Toast;
 import com.example.sonaj.coindonation.FaceCamera.camera.CameraSourcePreview;
 import com.example.sonaj.coindonation.FaceCamera.camera.GraphicOverlay;
 import com.example.sonaj.coindonation.R;
+import com.example.sonaj.coindonation.Util.CallbackEvent;
 import com.example.sonaj.coindonation.Util.RecyclerViewItemClickListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -113,6 +114,10 @@ public class FaceActivity extends AppCompatActivity {
   ImageButton btnChangeCameraView;
   Button btnBackPreview;
   Button btnCaptureComplete;
+
+  ImageView previewCapture;
+
+
 
 
 
@@ -164,6 +169,7 @@ public class FaceActivity extends AppCompatActivity {
     imCapture = (ImageView)findViewById(R.id.iv_capture);
     btnBackPreview = (Button)findViewById(R.id.btn_back_preview);
     btnCaptureComplete = (Button)findViewById(R.id.btn_capture_complete);
+    previewCapture = (ImageView)findViewById(R.id.previewCapture);
 
     //click listener
     btnChangeCameraView.setOnClickListener(mSwitchCameraButtonListener);
@@ -181,8 +187,11 @@ public class FaceActivity extends AppCompatActivity {
 
     //recyclerView item 넣어주기
     ArrayList<FaceMaskItem> faceMaskItems = new ArrayList<>();
-    faceMaskItems.add(new FaceMaskItem(R.drawable.red_hat));
-    faceMaskItems.add(new FaceMaskItem(R.drawable.pig_nose_emoji));
+    faceMaskItems.add(new FaceMaskItem(R.drawable.question_mark));
+    faceMaskItems.add(new FaceMaskItem(R.drawable.flower));
+    faceMaskItems.add(new FaceMaskItem(R.drawable.facemask02));
+    faceMaskItems.add(new FaceMaskItem(R.drawable.pig_nose));
+    faceMaskItems.add(new FaceMaskItem(R.drawable.dog));
     faceMaskItems.add(new FaceMaskItem(R.drawable.mustache));
     faceMaskItems.add(new FaceMaskItem(R.drawable.happy_star));
 
@@ -248,52 +257,12 @@ public class FaceActivity extends AppCompatActivity {
        * TODO : Overlay 에 띄워주는 애 따로 가져와서 얼굴그려주는 imageview 위에 그려준다. 그 후에 사진을 사용한다고 하면 미리보기 화면을 캡쳐해서 그 파일을 프로필 사진으로 사용
       */
       mPreview.capture();
-  //    mPreview.stop();
-      changeCameraStatus(CAMERA_STATUS_CAPTURE);
 
-     while (mPreview.getImageByte()==null){ // imageByte가 null일 때 계속 반복
-      Log.e("g","ggg");
-     }
-      String ImageByteToString = mPreview.getImageByte();
 
-     byte[] ImageByteArray = ImageByteToString.getBytes();
 
-        // convert byte array into bitmap
-            Bitmap loadedImage = null;
-            Bitmap sideInversionBitmap = null;
-            loadedImage = BitmapFactory.decodeByteArray(ImageByteArray, 0,
-                    ImageByteArray.length);
-
-            //sideInversion Image > rotate 이미지 받아서 좌우반전 시켜주기
-            Matrix sideInversionMatrix = new Matrix();
-            sideInversionMatrix.postScale(-1, 1);
-            sideInversionBitmap = Bitmap.createBitmap(loadedImage, 0, 0,
-                    loadedImage.getWidth(), loadedImage.getHeight(),
-                    sideInversionMatrix, false);
-
-        //Image save
-            if(sideInversionBitmap!=null){
-              File screenShot =ScreenShot(sideInversionBitmap);
-              context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(screenShot)));
-            }else{
-              Toast.makeText(context,"capture is null.",Toast.LENGTH_SHORT).show();
-            }
-
-      //Bitmap a = mPreview.capture();
-//      imCapture.setVisibility(View.VISIBLE);
-//      imCapture.setImageBitmap(sideInversionBitmap);
-
-//
-//      if(mPreview!=null){
-//        File screenShot =ScreenShot(mPreview);
-//        if(screenShot!=null){
-//          sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,Uri.fromFile(screenShot)));
-//        }
-//      }else{
-//        Toast.makeText(context,"rootView is null.",Toast.LENGTH_SHORT).show();
-//      }
     }
   };
+
 
   public void capture01(){
     Calendar cal = Calendar.getInstance();

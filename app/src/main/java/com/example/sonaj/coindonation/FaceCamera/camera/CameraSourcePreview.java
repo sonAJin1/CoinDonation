@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
@@ -38,6 +39,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.sonaj.coindonation.FaceCamera.FacePreviewActivity;
 import com.google.android.gms.common.images.Size;
 import com.google.android.gms.vision.CameraSource;
 
@@ -69,6 +71,7 @@ public class CameraSourcePreview extends ViewGroup {
 
     mSurfaceView = new SurfaceView(context);
     mSurfaceView.getHolder().addCallback(new SurfaceCallback());
+
 
     addView(mSurfaceView);
   }
@@ -143,32 +146,39 @@ public class CameraSourcePreview extends ViewGroup {
             // convert byte array into bitmap
             Bitmap loadedImage = null;
             Bitmap sideInversionBitmap = null;
-            loadedImage = BitmapFactory.decodeByteArray(bytes, 0,
-                    bytes.length);
+//            loadedImage = BitmapFactory.decodeByteArray(bytes, 0,
+//                    bytes.length);
 
-            //sideInversion Image > rotate 이미지 받아서 좌우반전 시켜주기
-            Matrix sideInversionMatrix = new Matrix();
-            sideInversionMatrix.postScale(-1, 1);
-            sideInversionBitmap = Bitmap.createBitmap(loadedImage, 0, 0,
-                    loadedImage.getWidth(), loadedImage.getHeight(),
-                    sideInversionMatrix, false);
+//            //sideInversion Image > rotate 이미지 받아서 좌우반전 시켜주기
+//            Matrix sideInversionMatrix = new Matrix();
+//            sideInversionMatrix.postScale(-1, 1);
+//            sideInversionBitmap = Bitmap.createBitmap(loadedImage, 0, 0,
+//                    loadedImage.getWidth(), loadedImage.getHeight(),
+//                    sideInversionMatrix, false);
+
+//            Bitmap bitmap = Bitmap.createBitmap(mSurfaceView.getWidth(), mSurfaceView.getHeight(), Bitmap.Config.ARGB_8888);
+
+            Log.e("bytes.Length", String.valueOf(bytes.length));
+            Intent intent = new Intent(getContext(), FacePreviewActivity.class);
+         //   intent.putExtra("faceImage",bytes);
+            getContext().startActivity(intent);
 
             //Image save
-            if(sideInversionBitmap!=null){
-              File screenShot =ScreenShot(sideInversionBitmap);
+            if (loadedImage != null) {
+              File screenShot = ScreenShot(loadedImage);
               getContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(screenShot)));
-            }else{
-              Toast.makeText(getContext(),"capture is null.",Toast.LENGTH_SHORT).show();
+
+            } else {
+              Toast.makeText(getContext(), "capture is null.", Toast.LENGTH_SHORT).show();
             }
+
           } catch (Exception e) {
             e.printStackTrace();
           }
         }
       });
 
-    }catch (Exception ex){
-
-    }
+    }catch (Exception ex){}
   }
 
   public static File ScreenShot(Bitmap capture){

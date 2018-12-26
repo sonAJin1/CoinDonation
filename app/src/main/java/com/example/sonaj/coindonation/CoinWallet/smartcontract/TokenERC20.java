@@ -59,7 +59,9 @@ public class TokenERC20 extends Contract {
         for (EventValues eventValues : valueList) {
             TransferEventResponse typedResponse = new TransferEventResponse();
             typedResponse.from = (String) eventValues.getIndexedValues().get(0).getValue();
+            android.util.Log.e("typedResponse.from",typedResponse.from);
             typedResponse.to = (String) eventValues.getIndexedValues().get(1).getValue();
+            android.util.Log.e("typedResponse.to",typedResponse.to);
             typedResponse.value = (BigInteger) eventValues.getNonIndexedValues().get(0).getValue();
             responses.add(typedResponse);
         }

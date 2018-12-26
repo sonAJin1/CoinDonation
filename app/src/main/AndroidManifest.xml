@@ -5,9 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -23,16 +24,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FaceCamera.FaceActivity"></activity>
+        <activity android:name=".FaceCamera.FaceActivity" />
+        <activity android:name=".CoinWallet.TestCoinWalletView" />
+
         <provider
-            android:authorities="com.example.sonaj.coindonation.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.example.sonaj.coindonation.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
+
+        <activity android:name=".FaceCamera.FacePreviewActivity" />
+        <activity android:name=".CoinWallet.SendCoinActivity"></activity>
     </application>
 
 </manifest>

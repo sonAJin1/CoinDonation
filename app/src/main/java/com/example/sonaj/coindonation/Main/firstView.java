@@ -6,6 +6,7 @@ import android.databinding.ViewDataBinding;
 import android.util.Log;
 import android.view.View;
 
+import com.example.sonaj.coindonation.CoinWallet.TestCoinWalletView;
 import com.example.sonaj.coindonation.FaceCamera.FaceActivity;
 import com.example.sonaj.coindonation.Util.BaseView;
 import com.example.sonaj.coindonation.databinding.FirstViewBinding;
@@ -44,7 +45,10 @@ public class firstView extends BaseView {
             Log.e("click","");
             Intent intent = new Intent(context, FaceActivity.class);
             context.startActivity(intent);
-
+        }
+        public void showWallet(View view){
+            Intent intent = new Intent(context, TestCoinWalletView.class);
+            context.startActivity(intent);
         }
 
     }

@@ -18,12 +18,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.sonaj.coindonation.CoinWallet.CoinWalletView;
 import com.example.sonaj.coindonation.Data.DBHelper;
 import com.example.sonaj.coindonation.R;
 import com.example.sonaj.coindonation.Util.MultiViewActivity;
 import com.example.sonaj.coindonation.databinding.MainBinding;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends MultiViewActivity {
 
@@ -91,7 +94,6 @@ public class MainActivity extends MultiViewActivity {
 
 
     public void init(){
-      //  btn_wallet = (Button)findViewById(R.id.btn_wallet);
         //사용자들이 선택해서 보여질 VIEW
         firstView = new firstView(this, binding.appBarContent.viewFirst);
         coinWalletView = new CoinWalletView(this, binding.appBarContent.viewWallet);
@@ -128,14 +130,31 @@ public class MainActivity extends MultiViewActivity {
                 setView(POSITION_CONTENTS_VIEW);
                 /**TODO: 지갑이 앱에 등록이 되어있으면 지갑 정보를 CoinWalletView에 보여줄것 */
                 /**TODO: 지갑이 앱에 등록되어있지 않으면 지갑 정보를 받을 수 있는 다이얼로그를 띄워줄것 */
-                Log.e("db in main",dbHelper.getResult());
-                if(dbHelper.getResult().length()==0){
-                    coinWalletView.showCoinWalletDialog();
-                }else{
-                   coinWalletView.setCoinWalletView();
-                }
+//                Log.e("db in main",dbHelper.getResult());
+//                if(dbHelper.getResult().length()==0){
+//                   // coinWalletView.showCoinWalletDialog();
+//                }else{
+//                   //coinWalletView.setCoinWalletView();
+//                }
+                coinWalletView.showWalletView();
 
             }
+        }
+    }
+    /* QR Scan */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                //toastMsg.Short(context, "Result Not Found");
+                Toast.makeText(context,"주소를 찾을 수 없습니다",Toast.LENGTH_LONG).show();
+            } else {
+                String[] array = result.getContents().split(":");
+                binding.appBarContent.viewWallet.sendtoaddress.setText(array[1]);
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

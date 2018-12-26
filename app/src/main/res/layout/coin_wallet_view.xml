@@ -1,176 +1,410 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
         <variable name="onClick" type="com.example.sonaj.coindonation.CoinWallet.CoinWalletView.OnClick"/>
     </data>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/backgroundColor">
-
-    <LinearLayout
-        android:id="@+id/ll_title"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="@color/mainColor">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/backgroundColor"
+                android:paddingBottom="100dp">
+
+
+                    <TextView
+                        android:id="@+id/tv_wallet_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="WALLET"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="30dp"
+                        android:textColor="@color/black"
+
+                        />
+
+                    <ImageButton
+                        android:id="@+id/btn_wallet_setting"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@drawable/ic_settings_black_24dp"
+                        android:backgroundTint="@color/black"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="15dp"
+                        android:onClick="@{onClick::showSetting}"/>
+
+
+
+                <LinearLayout
+                    android:id="@+id/ll_copy_wallet_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="100dp"
+                    android:layout_below="@+id/tv_wallet_title"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/round_rect"
+                    >
+
+                <ImageView
+                    android:id="@+id/iv_qrcord"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="20dp"
+                    android:background="@color/white"
+                    android:onClick="@{onClick::showQRBig}"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_wallet_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="my wallet"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="8dp"
+                            android:textSize="11sp"
+                            android:textColor="@color/black"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_wallet_address"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:text="my wallet address"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_coin_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_below="@+id/ll_copy_wallet_address">
+
+                </android.support.v7.widget.RecyclerView>
+
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/rl_balance"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/white"-->
+                <!--android:layout_below="@+id/ll_copy_wallet_address"-->
+                <!--android:layout_marginTop="-75dp"-->
+                <!--android:layout_marginLeft="30dp"-->
+                <!--android:layout_marginRight="30dp"-->
+                <!--android:padding="20dp">-->
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_scoin_name"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--/>-->
+                <!--&lt;!&ndash;SCOIN&ndash;&gt;-->
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_scoin_address"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text=""-->
+                    <!--android:layout_below="@+id/tv_scoin_name"-->
+                    <!--/>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_scoin_title"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="SAT Balance"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_scoin"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_toLeftOf="@+id/tv_scoin_unit"-->
+                    <!--android:layout_marginRight="8dp"-->
+                    <!--android:layout_below="@+id/tv_scoin_title"-->
+                    <!--android:text="0"-->
+                    <!--android:textSize="30sp"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_scoin_unit"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_marginTop="3dp"-->
+                    <!--android:layout_alignBaseline="@+id/tv_scoin"-->
+                    <!--android:text=""-->
+                    <!--/>-->
+
+                <!--&lt;!&ndash;ETH&ndash;&gt;-->
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_eth_title"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="ETH Balance"-->
+                    <!--android:layout_below="@+id/tv_scoin_unit"-->
+                    <!--android:layout_marginTop="20dp"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_eth"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerInParent="true"-->
+                    <!--android:layout_marginRight="8dp"-->
+                    <!--android:layout_toLeftOf="@+id/tv_eth_unit"-->
+                    <!--android:layout_below="@+id/tv_eth_title"-->
+                    <!--android:text="0"-->
+                    <!--android:textSize="30sp"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/tv_eth_unit"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_marginTop="3dp"-->
+                    <!--android:layout_alignBaseline="@+id/tv_eth"-->
+                    <!--android:text="ETH"-->
+                    <!--/>-->
+            <!--</RelativeLayout>-->
+            <LinearLayout
+                android:id="@+id/LayoutFee"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="WALLET"
-                android:layout_margin="15dp"
-                android:textColor="@color/white"
-                android:layout_centerInParent="true"
-                />
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/rv_coin_recyclerview">
 
-            <ImageButton
-                android:id="@+id/btn_wallet_setting"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/ic_settings_black_24dp"
-                android:backgroundTint="@color/white"
-                android:layout_alignParentRight="true"
-                android:layout_margin="15dp"
-                android:onClick="@{onClick::showSetting}"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="left|center_vertical"
+                    android:orientation="horizontal">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gas Limit: "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_gas_limit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:keyboardNavigationCluster="false"
+                            android:numeric="integer"
+                            android:text="2000000"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:orientation="horizontal">
+
+                        <SeekBar
+                            android:id="@+id/sb_gas_limit"
+                            style="@style/Widget.AppCompat.SeekBar.Discrete"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:max="21"
+                            android:min="0"
+                            android:progress="0" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
+                    android:gravity="left|center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gas Price: "
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_gas_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:numeric="integer"
+                            android:text="12"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" Gwei"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:orientation="vertical">
+
+                        <SeekBar
+                            android:id="@+id/sb_gas_price"
+                            style="@style/Widget.AppCompat.SeekBar.Discrete"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:max="18" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_tx_free"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:layout_below="@+id/LayoutFee"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:text="TX Fee: "
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_fee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numeric="integer"
+                    android:text="0"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/ll_tx_free"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="To: " />
+
+                    <EditText
+                        android:id="@+id/sendtoaddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:inputType="textPersonName" />
+
+                    <Button
+                        android:id="@+id/qrScan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="QR Scan"
+                        android:onClick="@{onClick::scanQR}"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/SendEthValue"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="1" />
+
+                    <Button
+                        android:id="@+id/SendEther"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Send Ether"
+                        android:onClick="@{onClick::sendEth}"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/SendTokenValue"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="1" />
+
+                    <Button
+                        android:id="@+id/SendToken"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Send Token"
+                        android:onClick="@{onClick::sendSToken}"/>
+                </LinearLayout>
+            </LinearLayout>
         </RelativeLayout>
-        <ImageView
-            android:id="@+id/iv_qrcord"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/white"/>
-
-        <TextView
-            android:id="@+id/tv_wallet_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="my wallet"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="18sp"
-            android:textColor="@color/white"
-            />
-
-        <TextView
-            android:id="@+id/tv_wallet_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="my wallet address"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/white"
-            android:textSize="11sp"
-            />
-
-        <LinearLayout
-            android:id="@+id/ll_copy_wallet_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="100dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="주소 복사하기"
-                android:textSize="10sp"
-                android:onClick="@{onClick::copyAddress}"
-                />
-
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_marginLeft="3dp"
-                android:layout_marginTop="2dp"
-                android:background="@drawable/ic_content_copy_black_24dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_below="@+id/ll_title"
-        android:layout_marginTop="-75dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:padding="20dp">
-        <!--SCOIN-->
-        <TextView
-            android:id="@+id/tv_scoin_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SAT Balance"
-            android:layout_alignParentRight="true"
-            />
-
-        <TextView
-            android:id="@+id/tv_scoin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/tv_scoin_unit"
-            android:layout_marginRight="8dp"
-            android:layout_below="@+id/tv_scoin_title"
-            android:text="0"
-            android:textSize="30sp"/>
-
-        <TextView
-            android:id="@+id/tv_scoin_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="3dp"
-            android:layout_alignBaseline="@+id/tv_scoin"
-            android:text="SAT"
-            />
-
-        <!--ETH-->
-        <TextView
-            android:id="@+id/tv_eth_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ETH Balance"
-            android:layout_below="@+id/tv_scoin_unit"
-            android:layout_marginTop="20dp"
-            android:layout_alignParentRight="true"
-            />
-
-        <TextView
-            android:id="@+id/tv_eth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/tv_eth_unit"
-            android:layout_below="@+id/tv_eth_title"
-            android:text="0"
-            android:textSize="30sp"/>
-
-        <TextView
-            android:id="@+id/tv_eth_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="3dp"
-            android:layout_alignBaseline="@+id/tv_eth"
-            android:text="ETH"
-            />
-    </RelativeLayout>
-
-
-
-
-
-
-</RelativeLayout>
+    </ScrollView>
 </layout>

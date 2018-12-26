@@ -66,6 +66,15 @@ class FaceGraphic extends GraphicOverlay.Graphic {
   private Drawable mMustacheGraphic;
   private Drawable mHappyStarGraphic;
   private Drawable mHatGraphic;
+  private Drawable mQuestionGraphic;
+  private Drawable mDogNoseGraphic;
+  private Drawable mDogEarGraphic;
+  private Drawable mWinkStarGraphic;
+  private Drawable mSmileFlower;
+  private Drawable mRoundFlower;
+  private Drawable mRoundFlowerSmile;
+  private Drawable mFaceMask;
+
 
   // We want each iris to move independently,
   // so each one gets its own physics engine.
@@ -83,10 +92,18 @@ class FaceGraphic extends GraphicOverlay.Graphic {
   }
 
   private void initializeGraphics(Resources resources) {
-    mPigNoseGraphic = resources.getDrawable(R.drawable.pig_nose_emoji);
+    mPigNoseGraphic = resources.getDrawable(R.drawable.pig_nose);
     mMustacheGraphic = resources.getDrawable(R.drawable.mustache);
     mHappyStarGraphic = resources.getDrawable(R.drawable.happy_star);
     mHatGraphic = resources.getDrawable(R.drawable.red_hat);
+    mQuestionGraphic = resources.getDrawable(R.drawable.question_mark);
+    mDogNoseGraphic = resources.getDrawable(R.drawable.dog_nose_2);
+    mDogEarGraphic = resources.getDrawable(R.drawable.dog_ear_2);
+    mWinkStarGraphic = resources.getDrawable(R.drawable.star);
+    mSmileFlower = resources.getDrawable(R.drawable.flower);
+    mRoundFlower = resources.getDrawable(R.drawable.flower_round_01);
+    mRoundFlowerSmile = resources.getDrawable(R.drawable.flower_round_02);
+    mFaceMask = resources.getDrawable(R.drawable.facemask);
   }
 
   private void initializePaints(Resources resources) {
@@ -152,6 +169,7 @@ class FaceGraphic extends GraphicOverlay.Graphic {
       }
     }
 
+
     // If we've made it this far, it means that the face data *is* available.
     // It's time to translate camera coordinates to view coordinates.
 
@@ -200,20 +218,35 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     float eyeRadius = EYE_RADIUS_PROPORTION * distance;
     float irisRadius = IRIS_RADIUS_PROPORTION * distance;
 
-    if(maskType==0){ // 마스크 리스트에서 빨간 모자를 선택한 경우
+    if(maskType==0){ // 마스크 리스트에서 물음표를 선택한 경우
       // Draw the hat only if the subject's head is titled at a
       // sufficiently jaunty angle.
       final float HEAD_TILT_HAT_THRESHOLD = 20.0f;
       if (Math.abs(eulerZ) > HEAD_TILT_HAT_THRESHOLD) {
-        drawHat(canvas, position, width, height, noseBasePosition);
+        drawQuestion(canvas, position, width, height, noseBasePosition);
       }
-    }else if(maskType==1){ // 마스크 리스트에서 돼지코를 선택한 경우
+    }else if(maskType==1){ // 마스크 리스트에서 꽃을 선택한 경우
+      drawRoundFlower(canvas, position, width, height, noseBasePosition,smiling);
+      drawSmail(canvas, position, width, height, noseBasePosition,smiling);
+    }else if(maskType==2){ // 마스크 리스트에서 병아리를 선택한 경우
+      drawFaceMask(canvas, position, width, height, noseBasePosition);
+      PointF leftIrisPosition = mLeftPhysics.nextIrisPosition(leftEyePosition, eyeRadius, irisRadius);
+      drawEye(canvas, leftEyePosition, eyeRadius, leftIrisPosition, irisRadius, leftEyeOpen, smiling);
+      PointF rightIrisPosition = mRightPhysics.nextIrisPosition(rightEyePosition, eyeRadius, irisRadius);
+      drawEye(canvas, rightEyePosition, eyeRadius, rightIrisPosition, irisRadius, rightEyeOpen, smiling);
+    }
+    else if(maskType==3){ // 마스크 리스트에서 돼지코를 선택한 경우
       // Draw the nose.
       drawNose(canvas, noseBasePosition, leftEyePosition, rightEyePosition, width);
-    }else if(maskType==2){ // 마스크 리스트에서 콧수염을 선택한 경우
+    }
+    else if(maskType==4){ // 마스크 리스트에서 강아지를 선택한 경우
+      drawdogNose02(canvas, noseBasePosition, mouthLeftPosition, mouthRightPosition, mouthBottomPosition);
+      drawDogEar(canvas, position, width, height, noseBasePosition);
+    }
+    else if(maskType==5){ // 마스크 리스트에서 콧수염을 선택한 경우
       // Draw the mustache.
       drawMustache(canvas, noseBasePosition, mouthLeftPosition, mouthRightPosition);
-    }else if(maskType==3){ // 마스크 리스트에서 별을 선택한 경우
+    }else if(maskType==6){ // 마스크 리스트에서 별을 선택한 경우
       // Draw the eyes.
       PointF leftIrisPosition = mLeftPhysics.nextIrisPosition(leftEyePosition, eyeRadius, irisRadius);
       drawEye(canvas, leftEyePosition, eyeRadius, leftIrisPosition, irisRadius, leftEyeOpen, smiling);
@@ -267,6 +300,69 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     mPigNoseGraphic.draw(canvas);
   }
 
+
+  private void drawFaceMask(Canvas canvas, PointF facePosition, float faceWidth, float faceHeight, PointF noseBasePosition) {
+    final float HAT_FACE_WIDTH_RATIO = (float) 1.2;
+    final float HAT_FACE_HEIGHT_RATIO = (float) 1.2;
+    final float HAT_CENTER_Y_OFFSET_FACTOR = (float) 1.0;
+
+    float hatCenterY = facePosition.y + (faceHeight * HAT_CENTER_Y_OFFSET_FACTOR);
+    float hatWidth = faceWidth * HAT_FACE_WIDTH_RATIO;
+    float hatHeight = faceHeight * HAT_FACE_HEIGHT_RATIO;
+
+    int left = (int) (noseBasePosition.x - (hatWidth / 1.5));
+    int right = (int) (noseBasePosition.x + (hatWidth / 1.5));
+    int top = (int) (hatCenterY - (hatHeight));
+    int bottom = (int) (hatCenterY + (hatHeight / 4));
+
+    mFaceMask.setBounds(left, top, right, bottom);
+    mFaceMask.draw(canvas);
+
+  }
+
+  private void drawRoundFlower(Canvas canvas, PointF facePosition, float faceWidth, float faceHeight, PointF noseBasePosition,boolean smailing) {
+    final float HAT_FACE_WIDTH_RATIO = (float)1.2 ;
+    final float HAT_FACE_HEIGHT_RATIO = (float)1.2;
+    final float HAT_CENTER_Y_OFFSET_FACTOR = (float) 1.2;
+
+    float hatCenterY = facePosition.y + (faceHeight * HAT_CENTER_Y_OFFSET_FACTOR);
+    float hatWidth = faceWidth * HAT_FACE_WIDTH_RATIO;
+    float hatHeight = faceHeight * HAT_FACE_HEIGHT_RATIO;
+
+    int left = (int)(noseBasePosition.x - (hatWidth/1.5));
+    int right = (int)(noseBasePosition.x + (hatWidth/1.5));
+    int top = (int)(hatCenterY - (hatHeight));
+    int bottom = (int)(hatCenterY + (hatHeight/4));
+
+    if(smailing){
+      mRoundFlowerSmile.setBounds(left, top, right, bottom);
+      mRoundFlowerSmile.draw(canvas);
+    }else{
+      mRoundFlower.setBounds(left, top, right, bottom);
+      mRoundFlower.draw(canvas);
+    }
+  }
+
+  private void drawSmail(Canvas canvas, PointF facePosition, float faceWidth, float faceHeight, PointF noseBasePosition,boolean smailing) {
+    final float HAT_FACE_WIDTH_RATIO = (float)1.0 ;
+    final float HAT_FACE_HEIGHT_RATIO = (float)1.0;
+    final float HAT_CENTER_Y_OFFSET_FACTOR = (float) 1.2;
+
+    float hatCenterY = facePosition.y + (faceHeight * HAT_CENTER_Y_OFFSET_FACTOR);
+    float hatWidth = faceWidth * HAT_FACE_WIDTH_RATIO;
+    float hatHeight = faceHeight * HAT_FACE_HEIGHT_RATIO;
+
+    int left = (int)(noseBasePosition.x - (hatWidth / 2));
+    int right = (int)(noseBasePosition.x + (hatWidth / 2));
+    int top = (int)(hatCenterY - (hatHeight / 2));
+    int bottom = (int)(hatCenterY + (hatHeight / 2));
+    if(smailing){
+      mSmileFlower.setBounds(left, top, right, bottom);
+      mSmileFlower.draw(canvas);
+    }
+
+  }
+
   private void drawMustache(Canvas canvas,
                             PointF noseBasePosition,
                             PointF mouthLeftPosition, PointF mouthRightPosition) {
@@ -274,6 +370,7 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     int top = (int)noseBasePosition.y;
     int right = (int)mouthRightPosition.x;
     int bottom = (int) Math.min(mouthLeftPosition.y, mouthRightPosition.y);
+
 
     // We need to check which camera is being used because the mustache graphic's bounds
     // are based on the left and right corners of the mouth, from the subject's persepctive.
@@ -302,6 +399,82 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     int bottom = (int)(hatCenterY + (hatHeight / 2));
     mHatGraphic.setBounds(left, top, right, bottom);
     mHatGraphic.draw(canvas);
+  }
+
+  private void drawQuestion(Canvas canvas, PointF facePosition, float faceWidth, float faceHeight, PointF noseBasePosition) {
+    final float HAT_FACE_WIDTH_RATIO = (float)(1.0 / 2.0);
+    final float HAT_FACE_HEIGHT_RATIO = (float)(1.0 / 3.0);
+    final float HAT_CENTER_Y_OFFSET_FACTOR = (float)(1.0 / 8.0);
+
+    float hatCenterY = facePosition.y + (faceHeight * HAT_CENTER_Y_OFFSET_FACTOR);
+    float hatWidth = faceWidth * HAT_FACE_WIDTH_RATIO;
+    float hatHeight = faceHeight * HAT_FACE_HEIGHT_RATIO;
+
+    int left = (int)(noseBasePosition.x - (hatWidth / 2));
+    int right = (int)(noseBasePosition.x + (hatWidth / 2));
+    int top = (int)(hatCenterY - (hatHeight / 2));
+    int bottom = (int)(hatCenterY + (hatHeight / 2));
+    mQuestionGraphic.setBounds(left, top, right, bottom);
+    mQuestionGraphic.draw(canvas);
+  }
+
+  private void drawDogEar(Canvas canvas, PointF facePosition, float faceWidth, float faceHeight, PointF noseBasePosition) {
+    final float HAT_FACE_WIDTH_RATIO = (float)1.0;
+    final float HAT_FACE_HEIGHT_RATIO = (float)(1.0 / 2.5);
+    final float HAT_CENTER_Y_OFFSET_FACTOR = (float)(1.0 / 8.0);
+
+    float hatCenterY = facePosition.y + (faceHeight * HAT_CENTER_Y_OFFSET_FACTOR);
+    float hatWidth = faceWidth * HAT_FACE_WIDTH_RATIO;
+    float hatHeight = faceHeight * HAT_FACE_HEIGHT_RATIO;
+
+    int left = (int)(noseBasePosition.x - (hatWidth / 2));
+    int right = (int)(noseBasePosition.x + (hatWidth / 2));
+    int top = (int)(hatCenterY - (hatHeight / 2));
+    int bottom = (int)(hatCenterY + (hatHeight / 2));
+    mDogEarGraphic.setBounds(left, top, right, bottom);
+    mDogEarGraphic.draw(canvas);
+  }
+
+  private void drawdogNose02(Canvas canvas,
+                            PointF noseBasePosition,
+                            PointF mouthLeftPosition, PointF mouthRightPosition, PointF mouthButtomPosition) {
+    int left = (int)mouthLeftPosition.x;
+    int top = (int)noseBasePosition.y;
+    int right = (int)mouthRightPosition.x;
+    //int bottom = (int) Math.min(mouthLeftPosition.y, mouthRightPosition.y);
+    int bottom = (int) mouthButtomPosition.y;
+
+    // We need to check which camera is being used because the mustache graphic's bounds
+    // are based on the left and right corners of the mouth, from the subject's persepctive.
+    // With the front camera, the subject's left will be on the *left* side of the view,
+    // but with the back camera, the subject's left will be on the *right* side.
+    if (mIsFrontFacing) {
+      mDogNoseGraphic.setBounds(left, top, right, bottom);
+    } else {
+      mDogNoseGraphic.setBounds(right, top, left, bottom);
+    }
+    mDogNoseGraphic.draw(canvas);
+  }
+
+  private void drawdogmouth(Canvas canvas,
+                             PointF noseBasePosition,
+                             PointF mouthLeftPosition, PointF mouthRightPosition, PointF mouthButtomPosition) {
+    int left = (int)mouthLeftPosition.x;
+    int top = (int)noseBasePosition.y;
+    int right = (int)mouthRightPosition.x;
+    //int bottom = (int) Math.min(mouthLeftPosition.y, mouthRightPosition.y);
+    int bottom = (int) mouthButtomPosition.y;
+
+    // We need to check which camera is being used because the mustache graphic's bounds
+    // are based on the left and right corners of the mouth, from the subject's persepctive.
+    // With the front camera, the subject's left will be on the *left* side of the view,
+    // but with the back camera, the subject's left will be on the *right* side.
+    if (mIsFrontFacing) {
+      mDogNoseGraphic.setBounds(left, top, right, bottom);
+    } else {
+      mDogNoseGraphic.setBounds(right, top, left, bottom);
+    }
+    mDogNoseGraphic.draw(canvas);
   }
 
 }

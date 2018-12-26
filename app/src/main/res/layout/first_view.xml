@@ -4,10 +4,10 @@
         <import type="android.view.View"/>
         <variable name="onClick" type="com.example.sonaj.coindonation.Main.firstView.OnClick"/>
     </data>
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    >
 
     <ImageView
         android:id="@+id/iv_profile"
@@ -15,6 +15,17 @@
         android:layout_height="100dp"
         android:background="@color/black"
         android:onClick="@{onClick::showFaceCamera}"
+        android:layout_centerInParent="true"
         />
-</LinearLayout>
+
+    <ImageView
+        android:id="@+id/wallet_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_account_balance_wallet_black_24dp"
+        android:onClick="@{onClick::showWallet}"
+        />
+</RelativeLayout>
 </layout>

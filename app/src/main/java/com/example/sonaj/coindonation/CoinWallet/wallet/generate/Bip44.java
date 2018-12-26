@@ -3,6 +3,7 @@ package com.example.sonaj.coindonation.CoinWallet.wallet.generate;
 import android.os.AsyncTask;
 
 import com.example.sonaj.coindonation.CoinWallet.callback.CBBip44;
+import com.example.sonaj.coindonation.CoinWallet.wallet.generate.crypto.MnemonicUtils;
 
 import org.bitcoinj.crypto.ChildNumber;
 import org.bitcoinj.crypto.DeterministicKey;
@@ -12,7 +13,7 @@ import org.bitcoinj.wallet.DeterministicSeed;
 import org.bitcoinj.wallet.UnreadableWalletException;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.LinuxSecureRandom;
-import org.web3j.crypto.MnemonicUtils;
+
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

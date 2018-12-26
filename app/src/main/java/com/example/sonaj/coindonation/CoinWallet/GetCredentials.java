@@ -31,8 +31,9 @@ public class GetCredentials {
     }
 
     public Credentials FromPrivatKey(String privatKey){
-        BigInteger privatkey = new BigInteger(privatKey);
-        return Credentials.create(privatkey.toString(16));
+        BigInteger privatkey = new BigInteger(privatKey,16);
+        //return Credentials.create(privatkey.toString(16));
+        return Credentials.create(ECKeyPair.create(privatkey));
     }
 
     public Credentials FromSeed(String seedCode,

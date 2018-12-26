@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="coinKindsItem" type="com.example.sonaj.coindonation.CoinWallet.CoinKindsItem"/>
+    </data>
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingRight="20dp"
+    android:paddingLeft="30dp"
+    android:background="@drawable/round_rect"
+    >
+
+    <TextView
+        android:id="@+id/tv_big_symbol_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="E"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_height="3dp"
+        android:layout_width="15dp"
+        android:background="@color/black"
+        android:layout_below="@+id/tv_big_symbol_coin"
+        android:layout_marginTop="-5dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_coin_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ETHER"
+        android:layout_below="@+id/view_divider"
+        android:layout_marginTop="27dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_balance_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_coin_name"
+        android:text="100"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/tv_symbol_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="ETH"
+        android:layout_toRightOf="@+id/tv_balance_coin"
+        android:layout_alignBaseline="@+id/tv_balance_coin"
+        android:layout_marginLeft="10dp"/>
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@+id/tv_coin_name"
+        android:layout_alignTop="@+id/tv_big_symbol_coin"
+        android:layout_marginLeft="90dp"
+        android:background="@drawable/circle_btn"
+        android:src="@drawable/ic_compare_arrows_white_24dp"/>
+
+</RelativeLayout>
+</layout>

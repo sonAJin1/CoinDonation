@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/main_ll"
-            android:orientation="vertical">
-
+            android:orientation="vertical"
+            >
 
             <!--Content-->
             <include
@@ -23,11 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </LinearLayout>
-        <!--<Button-->
-            <!--android:id="@+id/btn_wallet"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="지갑생성"/>-->
+
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
@@ -43,6 +39,7 @@
             app:menu="@menu/navigation"
             app:itemTextColor="@color/navigation_color"
             app:itemIconTint="@color/navigation_color"
+            android:layout_alignParentBottom="true"
             />
 
     </RelativeLayout>
