@@ -47,7 +47,8 @@ dependencies {
     implementation 'com.googlecode.json-simple:json-simple:1.1'
     implementation 'com.google.zxing:core:3.3.2'
     implementation 'org.bitcoinj:bitcoinj-core:0.14.7'
-//    implementation project(path: ':librarysdkew')
+    /** 로딩 이미지 */
+    implementation 'com.wang.avi:library:2.1.3'
 
 
 }

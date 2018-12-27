@@ -1,9 +1,329 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class = "SendCoinBinding">
+        <import type="android.view.View"/>
+        <variable name="onClick" type="com.example.sonaj.coindonation.CoinWallet.SendCoinActivity.OnClick"/>
+    </data>
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CoinWallet.SendCoinActivity">
+    tools:context=".CoinWallet.SendCoinActivity"
+    android:background="@color/backgroundColor">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_wallet_title_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ETH"
+        android:textStyle="bold"
+        android:textSize="35dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/tv_wallet_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="보내기"
+        android:textStyle="bold"
+        android:textSize="35dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/tv_wallet_title_name"
+        android:textColor="@color/black"
+        />
+
+    <ImageButton
+        android:id="@+id/btn_wallet_setting"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ic_keyboard_backspace_black_24dp"
+        android:backgroundTint="@color/black"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="25dp"
+        android:onClick="@{onClick::back}"
+        />
+    <LinearLayout
+        android:id="@+id/LayoutFee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical"
+        android:background="@drawable/round_rect"
+        android:padding="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/ll_send">
+
+        <TextView
+            android:id="@+id/tv_transaction_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전송 수수료"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="10dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gas Limit: "
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_gas_limit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:keyboardNavigationCluster="false"
+                    android:numeric="integer"
+                    android:text="2000000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal">
+
+                <SeekBar
+                    android:id="@+id/sb_gas_limit"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:max="21"
+                    android:min="0"
+                    android:progress="0" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gas Price: "
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_gas_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numeric="integer"
+                    android:text="12"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Gwei"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:orientation="vertical">
+
+                <SeekBar
+                    android:id="@+id/sb_gas_price"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="18" />
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_tx_free"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:text="TX Fee: "
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tv_fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numeric="integer"
+                android:text="0"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tv_wallet_title"
+        android:background="@drawable/round_rect"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="받는이"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sendtoaddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="지갑주소를 입력해주세요"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/qrScan"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/qr_code_icon"
+                android:onClick="@{onClick::scanQR}"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수량"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/black"/>
+
+        <LinearLayout
+            android:id="@+id/ll_send_token_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_send_coin_value"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ETH"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/ll_transaction_btn"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_below="@+id/tv_transaction_title"-->
+        <!--android:layout_marginLeft="30dp"-->
+        <!--android:layout_marginRight="30dp"-->
+        <!--android:layout_marginTop="10dp">-->
+
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="빠른전송"-->
+            <!--android:background="@drawable/round_rect"-->
+            <!--android:layout_marginRight="5dp"/>-->
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="보통전송"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:background="@drawable/round_rect"/>-->
+        <!--<Button-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="100dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="느린전송"-->
+            <!--android:background="@drawable/round_rect"/>-->
+
+
+    <!--</LinearLayout>-->
+
+    <Button
+        android:id="@+id/btn_send_coin"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:text="보내기"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:background="@color/black"
+        android:onClick="@{onClick::sendCoin}"/>
+</RelativeLayout>
+</layout>

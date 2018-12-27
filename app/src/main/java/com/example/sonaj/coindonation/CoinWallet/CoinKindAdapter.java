@@ -1,6 +1,8 @@
 package com.example.sonaj.coindonation.CoinWallet;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -33,14 +35,29 @@ public class CoinKindAdapter extends RecyclerView.Adapter<CoinKindAdapter.RViewH
     @Override
     public void onBindViewHolder(@NonNull RViewHolder rViewHolder, int i) {
         if (itemCoinList == null) return;
-        CoinKindsItem item = itemCoinList.get(i);
+        final CoinKindsItem item = itemCoinList.get(i);
         rViewHolder.bind(item);
         final CoinWalletItemBinding binding = rViewHolder.binding;
-
-        binding.tvCoinName.setText(item.getCoinName());
+        final String coinName = item.getCoinName();
+        binding.tvCoinName.setText(coinName);
         binding.tvSymbolCoin.setText(item.getCoinSymbol());
         binding.tvBigSymbolCoin.setText(item.getCoinBigSymbol());
         binding.tvBalanceCoin.setText(item.getCoinBalance());
+
+        // 토큰을 보내는 화면으로 넘어가게
+        binding.ibTransfer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context.getApplicationContext(), SendCoinActivity.class);
+                intent.putExtra("type",coinName);
+                if(coinName=="ETHEREUM"){
+                    ((Activity) context).startActivityForResult(intent,0);
+                }else{
+                    ((Activity) context).startActivityForResult(intent,1);
+                }
+
+            }
+        });
 
     }
 
@@ -73,8 +90,6 @@ public class CoinKindAdapter extends RecyclerView.Adapter<CoinKindAdapter.RViewH
 
         void bind(CoinKindsItem item) {
             binding.setCoinKindsItem(item);
-
-
         }
     }
 }

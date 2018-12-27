@@ -5,8 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-    <color name="mainColor">#fe5f61</color>
+    <color name="mainColor">#fe6f5f</color>
     <color name="backgroundColor">#dadada</color>
+    <color name="loadingBackground">#9e000000</color>
+
 
 
     <!-- FaceGraphic colors -->
@@ -18,4 +20,9 @@
 
     <!--recyclerView-->
     <color name="recyclerViewBackground">#a2ffffff</color>
+    
+    <!--지갑 전송상태-->
+    <color name="transferComplete">#aefea1</color>
+    <color name="transfering">#ffad48</color>
+    <color name="transferError">#fea1a4</color>
 </resources>

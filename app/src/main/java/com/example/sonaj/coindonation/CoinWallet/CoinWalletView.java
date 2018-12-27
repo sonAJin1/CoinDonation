@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -77,8 +78,10 @@ import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -92,11 +95,16 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
 
     String[] createAddress;
 
+    //sqlite
+    private DBHelper dbHelper;
+
     /**Adapter*/
     CoinKindAdapter coinKindAdapter;
+    CoinTransferAdapter coinTransferAdapter;
 
     /** adapter item */
     List<CoinKindsItem> coinKindsItemList;
+    List<CoinTransferItem> coinTransferItemList;
 
     private static final Logger log = LoggerFactory.getLogger(CoinWalletView.class);
 
@@ -107,7 +115,7 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
     IntentIntegrator qrScan;
     private Web3j mWeb3j;
     private File keydir;
-    private Credentials mCredentials;
+    public Credentials mCredentials;
     private BigInteger mGasPrice;
     private BigInteger mGasLimit;
     private SendingEther sendingEther;
@@ -115,6 +123,9 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
     private ToastMsg toastMsg;
     private InfoDialog mInfoDialog;
 
+    long mNow;
+    Date mDate;
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 
 
@@ -131,11 +142,13 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         this.context = context;
         this.binding = dataBinding;
         coinKindsItemList = new ArrayList<>();
+        coinTransferItemList = new ArrayList<>();
         init();
+        dbHelper = new DBHelper(context,"WalletTransfer01.db",null,1);
     }
 
     public void showWalletView(){
-        GetFee();
+        //GetFee();
         getWeb3j();
         keydir = context.getFilesDir();
         File[] listfiles = keydir.listFiles();
@@ -145,6 +158,7 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
             getCredentials(keydir);
         }
         setRecyclerView(); // 코인 종류 보여주는 listView
+
     }
 
     @Override
@@ -155,8 +169,10 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         qrScan = new IntentIntegrator((Activity) context);
         mInfoDialog = new InfoDialog(context);
 
-        binding.sbGasLimit.setOnSeekBarChangeListener(seekBarChangeListenerGL);
-        binding.sbGasPrice.setOnSeekBarChangeListener(seekBarChangeListenerGP);
+    }
+
+    public void setCoinWalletView(){
+        Log.e("db",dbHelper.getResult());
     }
 
     public void showCoinWalletDialog(){
@@ -172,6 +188,26 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
             }
         });
         dialog.show();
+    }
+
+    public void showCoinWalletInfoDialog(){
+        WalletInformationDialog dialog = new WalletInformationDialog(context,getEthAddress());
+        dialog.show();
+
+    }
+
+    public void setTransferHistory(){
+        dbHelper.update(0,0);
+        String db = dbHelper.getResult();
+        String[] result = db.split("\\n"); // 줄바꿈으로 나누기
+        Log.e("result",result[0]);
+
+        for(String dbResult : result){
+            String[] listContent = dbResult.split(" , ");
+            coinTransferItemList.add(new CoinTransferItem(listContent[0],listContent[2],listContent[1],"-"+listContent[3],listContent[4],listContent[5],listContent[6]));
+
+        }
+
     }
 
     /* Create Wallet */
@@ -203,6 +239,8 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         File[] listfiles = keydir.listFiles();
         try {
             mInfoDialog.Get("Load Wallet","Please wait few seconds");
+//            binding.avi.show();
+//            binding.ivLoadingBackground.setVisibility(View.VISIBLE);
             GetCredentials getCredentials = new GetCredentials();
             getCredentials.registerCallBack(this);
             getCredentials.FromFile(listfiles[0].getAbsolutePath(),mPasswordwallet);
@@ -218,7 +256,6 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
     @Override
     public void backLoadCredential(Credentials credentials) {
         mCredentials = credentials;
-
         LoadWallet();
     }
 
@@ -237,16 +274,8 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
     /* Set Address Ethereum */
     private void setEthAddress(String address){
         binding.tvWalletAddress.setText(address);
-        binding.ivQrcord.setImageBitmap(new Generate().Get(address,200,200));
     }
 
-    private String getToAddress(){
-        return binding.sendtoaddress.getText().toString();
-    }
-
-    private void setToAddress(String toAddress){
-        binding.sendtoaddress.setText(toAddress);
-    }
 
     /* Get Balance */
     private String getEthBalance(){
@@ -260,46 +289,14 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         return null;
     }
 
-    /* Get Send Ammount */
-    private String getSendEtherAmmount(){
-        return binding.SendEthValue.getText().toString();
-    }
-
-    private String getSendTokenAmmount(){
-        return binding.SendTokenValue.getText().toString();
-    }
-
     /* Set Balance */
     private void setEthBalance(String ethBalance){
         /* coin kind recyclerView 에 이더 item 추가 */
         String strNumber = String.format("%.9f", Float.valueOf(ethBalance));
         coinKindAdapter.add(0,new CoinKindsItem("ETHEREUM","E","ETH",strNumber));
         mInfoDialog.Dismiss();
-    }
-
-    public void GetFee(){
-        setGasPrice(getGasPrice());
-        setGasLimit(getGasLimit());
-
-        BigDecimal fee = BigDecimal.valueOf(mGasPrice.doubleValue()*mGasLimit.doubleValue());
-        BigDecimal feeresult = Convert.fromWei(fee.toString(),Convert.Unit.ETHER);
-        binding.tvFee.setText(feeresult.toPlainString() + " ETH");
-    }
-
-    private String getGasPrice(){
-        return binding.tvGasPrice.getText().toString();
-    }
-
-    private void setGasPrice(String gasPrice){
-        mGasPrice = Convert.toWei(gasPrice,Convert.Unit.GWEI).toBigInteger();
-    }
-
-    private String getGasLimit() {
-        return binding.tvGasLimit.getText().toString();
-    }
-
-    private void setGasLimit(String gasLimit){
-        mGasLimit = BigInteger.valueOf(Long.valueOf(gasLimit));
+//        binding.avi.smoothToHide();
+//        binding.ivLoadingBackground.setVisibility(View.GONE);
     }
 
     /*Get Token Info*/
@@ -317,8 +314,6 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
 
         /* coin kind recyclerView 에 토큰 item 추가 */
         coinKindAdapter.add(1,new CoinKindsItem("AJIN TOKEN","A","AJT",convertTokenBalance));
-
-
     }
     private void setTokenBalance(String value){
         /**단위가 정말 중요하다 wei 형식으로 값이 들어오기때문에 ether의 단위까지 줄여서 보여줘야한다. 내보낼때도 마찬가지!*/
@@ -327,41 +322,68 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
     /* End Get Token*/
 
     /* Sending */
-    private void sendEther(){
+    public void sendEther(String GasPrice, String GasLimit, String toAddress, String EtherAmmount){
         sendingEther = new SendingEther(mWeb3j,
                 mCredentials,
-                getGasPrice(),
-                getGasLimit());
+                GasPrice,
+                GasLimit);
         sendingEther.registerCallBack(this);
-        sendingEther.Send(getToAddress(),getSendEtherAmmount());
+        sendingEther.Send(toAddress,EtherAmmount);
+
+        //db에 넣고 adapter에 추가해서 list에 바로 저장할 수 있게
+        dbHelper.insert("ETHER","ETH","E",EtherAmmount,1,getTime(),"0");
+        coinTransferAdapter.add(new CoinTransferItem("ETHER","E","ETH","-"+EtherAmmount,"1",getTime(),"0"));
     }
 
     @Override
     public void backSendEthereum(EthSendTransaction result) {
         toastMsg.Long(context,result.getTransactionHash());
         LoadWallet();
+
+        //db랑 adapter 에 transferStatus 값 0으로 변경
+        int lastPosition = dbHelper.getLastPosition();
+        dbHelper.update(lastPosition,0);
+        coinTransferAdapter.update(lastPosition,"0",result.getTransactionHash(),getTime());
     }
-    private void sendToken(){
+
+    public void sendToken(String GasPrice, String GasLimit, String toAddress, String TokenAmmount){
         sendingToken = new SendingToken(mWeb3j,
                 mCredentials,
-                getGasPrice(),
-                getGasLimit());
+                GasPrice,
+                GasLimit);
         sendingToken.registerCallBackToken(this);
-        sendingToken.Send(mSmartcontract,getToAddress(),getSendTokenAmmount());
+        sendingToken.Send(mSmartcontract,toAddress,TokenAmmount);
+
+        //db에 넣고 adapter에 추가해서 list에 바로 저장할 수 있게
+        dbHelper.insert("AJIN TOKEN","AJT","A",TokenAmmount,1,getTime(),"0");
+        coinTransferAdapter.add(new CoinTransferItem("AJIN TOKEN","A","AJT","-"+TokenAmmount,"1",getTime(),"0"));
+
     }
 
     @Override
     public void backSendToken(TransactionReceipt result) {
-        toastMsg.Long(context,result.getTransactionHash());
+        toastMsg.Long(context,result.getTransactionHash()); //결과값이 여기서 들어온다
         LoadWallet();
+        getTransactionStatus(result);
+
+        //db랑 adapter 에 transferStatus 값 0으로 변경
+        int lastPosition = dbHelper.getLastPosition();
+        dbHelper.update(lastPosition,0);
+        coinTransferAdapter.update(lastPosition,"0",result.getTransactionHash(),getTime());
     }
     /* End Sending */
 
-    /* Start get transaction status */
+
+    /* Start get transaction status (지금부터 보내지는 토큰을 listView에 추가할 것*/
     public void getTransactionStatus(TransactionReceipt receipt){
 
         if(receipt.getBlockNumber()==null){ //대기중인 트랜잭션
 
+        }else{ //거래완료
+            for(int i=0; i<receipt.getLogs().size(); i++){
+                receipt.getLogs().get(i);
+               Log.e("blockNumberRaw", receipt.getBlockNumberRaw());
+            }
         }
     }
 
@@ -370,12 +392,13 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
     /* coin kind recyclerView */
     private void setRecyclerView(){
 
+        coinKindsItemList.clear();
+
         /** Coin kinds recyclerView */
         /* coin kind recyclerView 에 이더 item 추가 */
         coinKindsItemList.add(new CoinKindsItem("ETHER","E","ETH","0"));
         /* coin kind recyclerView 에 토큰 item 추가 */
         coinKindsItemList.add(new CoinKindsItem("AJIN TOKEN","A","AJT","0"));
-
 
         coinKindAdapter = new CoinKindAdapter(context, coinKindsItemList);
         binding.rvCoinRecyclerview.setAdapter(coinKindAdapter);
@@ -393,42 +416,45 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.right = 25; // recyclerView 사이 간격 10
+                outRect.right = 5; // recyclerView 사이 간격 10
             }
         });
 
-    }
+        /** Coin transfer recyclerView*/
+        coinTransferItemList.clear();
+        /* coin kind recyclerView 에 이더 item 추가 */
+        setTransferHistory(); // sqlite 에서 데이터 가져옴
 
-    /* SeekBar Listener */
-    private SeekBar.OnSeekBarChangeListener seekBarChangeListenerGL = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            GetGasLimit(String.valueOf(seekBar.getProgress()*1000+2000000));
+        coinTransferAdapter = new CoinTransferAdapter(context, coinTransferItemList);
+        binding.rvCoinTransferList.setAdapter(coinTransferAdapter);
+
+        //recyclerView 스크롤 방향 설정 (가로로 스크롤 > HORIZONTAL)
+        binding.rvCoinTransferList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+
+
+        if(binding.rvCoinTransferList.getItemDecorationCount()>0){ // 전에 설정된 간격이 있으면
+            binding.rvCoinTransferList.removeItemDecorationAt(0); // 전에 간격 없애기
         }
-        @Override public void onStartTrackingTouch(SeekBar seekBar) { }
-        @Override public void onStopTrackingTouch(SeekBar seekBar) { }
-    };
-    private SeekBar.OnSeekBarChangeListener seekBarChangeListenerGP = new SeekBar.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            GetGasPrice(String.valueOf(seekBar.getProgress()+12));
-        }
-        @Override public void onStartTrackingTouch(SeekBar seekBar) { }
-        @Override public void onStopTrackingTouch(SeekBar seekBar) { }
-    };
 
-    public void GetGasLimit(String value) {
-        binding.tvGasLimit.setText(value);
-        GetFee();
+        // recyclerView 사이 간격 설정
+        binding.rvCoinTransferList.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                outRect.bottom = 10; // recyclerView 사이 간격 10
+            }
+        });
+
+
     }
-    public void GetGasPrice(String value) {
-        binding.tvGasPrice.setText(value);
-        GetFee();
+    private String getTime(){
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        return mFormat.format(mDate);
     }
-    /* End SeekBar Listener */
 
 
-    /* End Q Scan */
+
 
     public class OnClick{
         public void showSetting(View view) {
@@ -442,18 +468,10 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
             //복사가 되었다면 토스트메시지 노출
             Toast.makeText(context,"지갑 주소가 복사되었습니다.",Toast.LENGTH_SHORT).show();
         }
-        public void sendSToken(View view){
-            sendToken();
-        }
-        public void sendEth(View view){
-            sendEther();
-        }
+
+
         public void showQRBig(View view){
-            final Dialog dialog = new Dialog(context);
-            dialog.setContentView(R.layout.qr_view);
-            qr_big = (ImageView) dialog.findViewById(R.id.qr_big);
-            qr_big.setImageBitmap(new Generate().Get(getEthAddress(),600,600));
-            dialog.show();
+            showCoinWalletInfoDialog();
         }
         public void scanQR(View view){
             new ScanIntegrator((Activity) context).startScan();

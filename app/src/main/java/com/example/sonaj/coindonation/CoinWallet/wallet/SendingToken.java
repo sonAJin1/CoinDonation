@@ -74,7 +74,6 @@ public class SendingToken {
         protected void onPostExecute(TransactionReceipt result) {
             super.onPostExecute(result);
             cbSendingToken.backSendToken(result);
-            //token.getTransferEvents(result);
         }
     }
 

@@ -128,33 +128,32 @@ public class MainActivity extends MultiViewActivity {
         public void showWallet() {
             if(currentViewPosition!=POSITION_CONTENTS_VIEW) {
                 setView(POSITION_CONTENTS_VIEW);
-                /**TODO: 지갑이 앱에 등록이 되어있으면 지갑 정보를 CoinWalletView에 보여줄것 */
-                /**TODO: 지갑이 앱에 등록되어있지 않으면 지갑 정보를 받을 수 있는 다이얼로그를 띄워줄것 */
-//                Log.e("db in main",dbHelper.getResult());
-//                if(dbHelper.getResult().length()==0){
-//                   // coinWalletView.showCoinWalletDialog();
-//                }else{
-//                   //coinWalletView.setCoinWalletView();
-//                }
                 coinWalletView.showWalletView();
 
             }
         }
     }
-    /* QR Scan */
+
+    /* send coin */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() == null) {
-                //toastMsg.Short(context, "Result Not Found");
-                Toast.makeText(context,"주소를 찾을 수 없습니다",Toast.LENGTH_LONG).show();
-            } else {
-                String[] array = result.getContents().split(":");
-                binding.appBarContent.viewWallet.sendtoaddress.setText(array[1]);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            String gasPrice = data.getStringExtra("gasPrice");
+            String gasLimit = data.getStringExtra("gasLimit");
+            String toAddress = data.getStringExtra("toAddress");
+            String sendTokenAmmount = data.getStringExtra("sendAmmount");
+
+            switch (requestCode) {
+                // SendCoinActivity 에서 요청할 때 보낸 요청 코드 (1)
+                case 0: //이더리움
+                    Toast.makeText(this,"eth",Toast.LENGTH_LONG).show();
+                    coinWalletView.sendEther(gasPrice,gasLimit,toAddress,sendTokenAmmount);
+                    break;
+                case 1: //토큰
+                   Toast.makeText(this,"token",Toast.LENGTH_LONG).show();
+                   coinWalletView.sendToken(gasPrice,gasLimit,toAddress,sendTokenAmmount);
+                    break;
             }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 

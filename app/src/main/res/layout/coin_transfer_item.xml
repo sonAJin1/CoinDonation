@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="coinKindsItem" type="com.example.sonaj.coindonation.CoinWallet.CoinTransferItem"/>
+    </data>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:background="@drawable/round_rect">
+
+    <!--<TextView-->
+        <!--android:id="@+id/tv_transfer_date"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="2018/12/27"-->
+        <!--android:textSize="12sp"-->
+        <!--android:layout_marginBottom="5dp"/>-->
+
+    <RelativeLayout
+        android:id="@+id/rl_coin_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/black_stroke_circle"
+        >
+
+        <TextView
+            android:id="@+id/tV_transfer_coin_big_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_transfer_coin_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ETHEREUM"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_toRightOf="@+id/rl_coin_image"
+        android:layout_marginLeft="15dp"/>
+
+    <TextView
+        android:id="@+id/tv_transfer_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_transfer_coin_name"
+        android:text="전송중"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@+id/rl_coin_image"
+        android:layout_marginLeft="15dp"
+        />
+
+    <!--<TextView-->
+    <!--android:id="@+id/btn_transfer_status"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="20dp"-->
+    <!--android:background="@drawable/round_rect"-->
+    <!--android:layout_margin="5dp"-->
+    <!--android:text="세부정보"-->
+    <!--android:textSize="12sp"-->
+    <!--android:layout_alignBottom="@+id/tv_transfer_status"-->
+    <!--android:layout_toRightOf="@+id/tv_transfer_status"-->
+
+    <!--/>-->
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tv_transfer_coin_name"
+        android:textSize="10sp"
+        android:layout_alignParentRight="true"
+        android:text="2018/12/24 12:23:23"/>
+
+    <TextView
+        android:id="@+id/tv_transfer_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-100"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_alignBottom="@+id/tv_transfer_status"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_transfer_coin_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ETH"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="5dp"
+        android:layout_alignBottom="@+id/tv_transfer_balance"
+        android:layout_alignParentRight="true"
+        />
+
+
+</RelativeLayout>
+</layout>
