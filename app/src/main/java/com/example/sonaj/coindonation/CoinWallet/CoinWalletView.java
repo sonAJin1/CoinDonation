@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.sonaj.coindonation.CoinWallet.callback.CBBip44;
 import com.example.sonaj.coindonation.CoinWallet.callback.CBGetCredential;
 import com.example.sonaj.coindonation.CoinWallet.callback.CBLoadSmartContract;
@@ -123,6 +124,12 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
     private ToastMsg toastMsg;
     private InfoDialog mInfoDialog;
 
+    boolean isAR = false;
+    private String ARGasPrice;
+    private String ARGasLimit;
+    private String ARtoAddress;
+    private String ARSendAmmount;
+
     long mNow;
     Date mDate;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -141,10 +148,39 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         super(context, dataBinding);
         this.context = context;
         this.binding = dataBinding;
+        isAR = false;
         coinKindsItemList = new ArrayList<>();
         coinTransferItemList = new ArrayList<>();
         init();
         dbHelper = new DBHelper(context,"WalletTransfer01.db",null,1);
+
+        coinTransferItemList.clear();
+        /* coin kind recyclerView 에 이더 item 추가 */
+        setTransferHistory(); // sqlite 에서 데이터 가져옴
+    }
+
+    /** AR 화면에서 MAIN 화면으로 넘어온뒤에 토큰 보내기 위해서 호출하는 생성자*/
+    public CoinWalletView(Context context, CoinWalletViewBinding dataBinding, String gasPrice, String gasLimit, String toAddress, String sendAmmount, boolean isAR){
+        super(context, dataBinding);
+        this.context = context;
+        this.binding = dataBinding;
+        this.isAR = isAR;
+        this.ARGasPrice = gasPrice;
+        this.ARGasLimit = gasLimit;
+        this.ARtoAddress = toAddress;
+        this.ARSendAmmount= sendAmmount;
+
+        coinKindsItemList = new ArrayList<>();
+        coinTransferItemList = new ArrayList<>();
+        init();
+        dbHelper = new DBHelper(context,"WalletTransfer01.db",null,1);
+
+        coinTransferItemList.clear();
+        /* coin kind recyclerView 에 이더 item 추가 */
+        setTransferHistory(); // sqlite 에서 데이터 가져옴
+
+//        // 코인 전송하기
+//        sendToken(gasPrice,gasLimit,toAddress,sendAmmount);
     }
 
     public void showWalletView(){
@@ -157,6 +193,7 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         } else {
             getCredentials(keydir);
         }
+
         setRecyclerView(); // 코인 종류 보여주는 listView
 
     }
@@ -168,6 +205,10 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         toastMsg = new ToastMsg();
         qrScan = new IntentIntegrator((Activity) context);
         mInfoDialog = new InfoDialog(context);
+        //Lottie Animation
+//        binding.animationView.setAnimation("little_balls.json");
+//        binding.animationView.loop(true);
+
 
     }
 
@@ -215,7 +256,10 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         Bip44 bip44 = new Bip44();
         bip44.registerCallBack(this);
         bip44.execute(mPasswordwallet);
-        mInfoDialog.Get("Wallet generation", "Please wait few seconds");
+        //Lottie Animation start
+//        binding.animationView.playAnimation();
+//        binding.animationView.setVisibility(View.VISIBLE);
+        mInfoDialog.Get("지갑 생성중", "잠시만 기다려주세요");
     }
 
     @Override
@@ -238,7 +282,10 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
     private void getCredentials(File keydir){
         File[] listfiles = keydir.listFiles();
         try {
-            mInfoDialog.Get("Load Wallet","Please wait few seconds");
+            //Lottie Animation start
+//            binding.animationView.playAnimation();
+//            binding.animationView.setVisibility(View.VISIBLE);
+            mInfoDialog.Get("지갑 불러오는 중","잠시만 기다려주세요");
 //            binding.avi.show();
 //            binding.ivLoadingBackground.setVisibility(View.VISIBLE);
             GetCredentials getCredentials = new GetCredentials();
@@ -294,6 +341,11 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         /* coin kind recyclerView 에 이더 item 추가 */
         String strNumber = String.format("%.9f", Float.valueOf(ethBalance));
         coinKindAdapter.add(0,new CoinKindsItem("ETHEREUM","E","ETH",strNumber));
+//Lottie Animation start
+//        binding.animationView.pauseAnimation();
+//        binding.animationView.setProgress(0);
+//        binding.animationView.setVisibility(View.GONE);
+
         mInfoDialog.Dismiss();
 //        binding.avi.smoothToHide();
 //        binding.ivLoadingBackground.setVisibility(View.GONE);
@@ -314,6 +366,13 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
 
         /* coin kind recyclerView 에 토큰 item 추가 */
         coinKindAdapter.add(1,new CoinKindsItem("AJIN TOKEN","A","AJT",convertTokenBalance));
+
+        // 코인 전송하기
+        if(isAR){
+            Log.e("arSend","");
+            sendToken(ARGasPrice,ARGasLimit,ARtoAddress,ARSendAmmount);
+            isAR = false;
+        }
     }
     private void setTokenBalance(String value){
         /**단위가 정말 중요하다 wei 형식으로 값이 들어오기때문에 ether의 단위까지 줄여서 보여줘야한다. 내보낼때도 마찬가지!*/
@@ -337,7 +396,7 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
 
     @Override
     public void backSendEthereum(EthSendTransaction result) {
-        toastMsg.Long(context,result.getTransactionHash());
+      //  toastMsg.Long(context,result.getTransactionHash());
         LoadWallet();
 
         //db랑 adapter 에 transferStatus 값 0으로 변경
@@ -360,16 +419,21 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
 
     }
 
+
     @Override
     public void backSendToken(TransactionReceipt result) {
-        toastMsg.Long(context,result.getTransactionHash()); //결과값이 여기서 들어온다
-        LoadWallet();
-        getTransactionStatus(result);
+        if(result!=null){
+          //  toastMsg.Long(context,result.getTransactionHash()); //결과값이 여기서 들어온다
+            LoadWallet();
+            getTransactionStatus(result);
 
-        //db랑 adapter 에 transferStatus 값 0으로 변경
-        int lastPosition = dbHelper.getLastPosition();
-        dbHelper.update(lastPosition,0);
-        coinTransferAdapter.update(lastPosition,"0",result.getTransactionHash(),getTime());
+            //db랑 adapter 에 transferStatus 값 0으로 변경
+            int lastPosition = dbHelper.getLastPosition();
+            dbHelper.update(lastPosition,0);
+            coinTransferAdapter.update(lastPosition,"0",result.getTransactionHash(),getTime());
+        }else{
+            toastMsg.Long(context,"오류가 발생했습니다. 다시 시도해주세요");
+        }
     }
     /* End Sending */
 
@@ -421,15 +485,15 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
         });
 
         /** Coin transfer recyclerView*/
-        coinTransferItemList.clear();
-        /* coin kind recyclerView 에 이더 item 추가 */
-        setTransferHistory(); // sqlite 에서 데이터 가져옴
+//        coinTransferItemList.clear();
+//        /* coin kind recyclerView 에 이더 item 추가 */
+//        setTransferHistory(); // sqlite 에서 데이터 가져옴
 
         coinTransferAdapter = new CoinTransferAdapter(context, coinTransferItemList);
         binding.rvCoinTransferList.setAdapter(coinTransferAdapter);
 
         //recyclerView 스크롤 방향 설정 (가로로 스크롤 > HORIZONTAL)
-        binding.rvCoinTransferList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        binding.rvCoinTransferList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true));
 
 
         if(binding.rvCoinTransferList.getItemDecorationCount()>0){ // 전에 설정된 간격이 있으면
@@ -441,7 +505,7 @@ public class CoinWalletView extends BaseView  implements CBGetCredential, CBLoad
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
-                outRect.bottom = 10; // recyclerView 사이 간격 10
+                outRect.bottom = 8; // recyclerView 사이 간격 10
             }
         });
 

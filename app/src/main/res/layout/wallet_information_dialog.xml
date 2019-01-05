@@ -1,38 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="15dp">
+    android:layout_margin="20dp"
+    >
     <ImageButton
         android:id="@+id/btn_wallet_info_cancel"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/ic_close_black_24dp"
-        android:layout_gravity="right"
-        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
         />
 
     <ImageView
         android:id="@+id/qr_code"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:padding="10dp"
-        android:layout_gravity="center_horizontal"/>
+        android:padding="5dp"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/tv_address_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/qr_code"
+        android:textSize="15sp"
+        android:textColor="@color/black"
         />
+
+    <TextView
+        android:id="@+id/text_copy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="지갑 주소 복사하기"
+        android:textColor="@color/black"
+        android:fontFamily="@font/nanum"
+        android:layout_marginTop="5dp"
+        android:textSize="12sp"
+        android:layout_below="@+id/tv_address_dialog"
+        />
+    <Button
+        android:id="@+id/btn_copy_address"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="@drawable/ic_content_copy_black_24dp"
+        android:backgroundTint="@color/black"
+        android:layout_below="@+id/tv_address_dialog"
+        android:layout_toRightOf="@+id/text_copy"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="10dp"
+        android:onClick="@{onClick::copyAddress}"/>
 
     <Button
         android:id="@+id/btn_show_eth_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="이더스캔에서 보기"
-        android:background="@color/white"
+        android:background="@drawable/round_rect_point"
+        android:layout_below="@+id/btn_copy_address"
+        android:fontFamily="@font/nanum_bold"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"/>
+        />
 
-</LinearLayout>
+</RelativeLayout>

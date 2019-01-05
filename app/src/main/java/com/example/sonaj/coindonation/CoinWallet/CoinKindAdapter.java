@@ -1,15 +1,18 @@
 package com.example.sonaj.coindonation.CoinWallet;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.sonaj.coindonation.R;
 import com.example.sonaj.coindonation.databinding.CoinWalletItemBinding;
 
 import java.util.List;
@@ -32,6 +35,7 @@ public class CoinKindAdapter extends RecyclerView.Adapter<CoinKindAdapter.RViewH
         return new CoinKindAdapter.RViewHolder(binding);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull RViewHolder rViewHolder, int i) {
         if (itemCoinList == null) return;
@@ -44,6 +48,18 @@ public class CoinKindAdapter extends RecyclerView.Adapter<CoinKindAdapter.RViewH
         binding.tvBigSymbolCoin.setText(item.getCoinBigSymbol());
         binding.tvBalanceCoin.setText(item.getCoinBalance());
 
+        if(i==1){ //2번째 아이템일 경우
+            binding.tvCoinName.setTextColor(context.getColor(R.color.white));
+            binding.tvSymbolCoin.setTextColor(context.getColor(R.color.white));
+            binding.tvBigSymbolCoin.setTextColor(context.getColor(R.color.white));
+            binding.tvBalanceCoin.setTextColor(context.getColor(R.color.white));
+            binding.llWalletItem.setBackground(context.getDrawable(R.drawable.round_rect_main_color));
+            binding.llWalletItem.setPadding(70,60,60,60);
+            binding.viewDivider.setBackgroundColor(context.getColor(R.color.white));
+            binding.ibTransfer.setBackgroundResource(R.drawable.circle_btn_white);
+            binding.ibTransfer.setColorFilter(R.color.white);
+        }
+
         // 토큰을 보내는 화면으로 넘어가게
         binding.ibTransfer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +71,6 @@ public class CoinKindAdapter extends RecyclerView.Adapter<CoinKindAdapter.RViewH
                 }else{
                     ((Activity) context).startActivityForResult(intent,1);
                 }
-
             }
         });
 

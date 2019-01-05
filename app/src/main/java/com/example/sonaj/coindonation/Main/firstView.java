@@ -1,17 +1,16 @@
 package com.example.sonaj.coindonation.Main;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.ViewDataBinding;
 import android.util.Log;
 import android.view.View;
 
+import com.example.sonaj.coindonation.AR.UnityPlayerActivity;
 import com.example.sonaj.coindonation.CoinWallet.TestCoinWalletView;
 import com.example.sonaj.coindonation.FaceCamera.FaceActivity;
 import com.example.sonaj.coindonation.Util.BaseView;
 import com.example.sonaj.coindonation.databinding.FirstViewBinding;
-
-import jnr.ffi.annotations.In;
 
 public class firstView extends BaseView {
     /**
@@ -42,13 +41,20 @@ public class firstView extends BaseView {
     public class OnClick{
         // google vision 카메라 뷰로 이동
         public void showFaceCamera(View view) {
-            Log.e("click","");
             Intent intent = new Intent(context, FaceActivity.class);
             context.startActivity(intent);
         }
         public void showWallet(View view){
             Intent intent = new Intent(context, TestCoinWalletView.class);
             context.startActivity(intent);
+        }
+        public void showAR(View view){
+            Intent intent = new Intent(context, UnityPlayerActivity.class);
+            context.startActivity(intent);
+//            ((Activity) context).startActivityForResult(intent,2);
+        }
+        public void deleteInfo(View view){
+           // binding.
         }
 
     }

@@ -63,10 +63,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.sonaj.coindonation.AR.UnityPlayerActivity;
 import com.example.sonaj.coindonation.FaceCamera.camera.CameraSourcePreview;
 import com.example.sonaj.coindonation.FaceCamera.camera.GraphicOverlay;
+import com.example.sonaj.coindonation.Main.MainActivity;
 import com.example.sonaj.coindonation.R;
 import com.example.sonaj.coindonation.Util.CallbackEvent;
 import com.example.sonaj.coindonation.Util.RecyclerViewItemClickListener;
@@ -114,8 +117,10 @@ public class FaceActivity extends AppCompatActivity {
   ImageButton btnChangeCameraView;
   Button btnBackPreview;
   Button btnCaptureComplete;
+  Button btnInfoDelete;
 
   ImageView previewCapture;
+  RelativeLayout infoLayout;
 
 
 
@@ -170,12 +175,15 @@ public class FaceActivity extends AppCompatActivity {
     btnBackPreview = (Button)findViewById(R.id.btn_back_preview);
     btnCaptureComplete = (Button)findViewById(R.id.btn_capture_complete);
     previewCapture = (ImageView)findViewById(R.id.previewCapture);
+    btnInfoDelete = (Button)findViewById(R.id.ib_enter);
+    infoLayout = (RelativeLayout)findViewById(R.id.rl_info);
 
     //click listener
     btnChangeCameraView.setOnClickListener(mSwitchCameraButtonListener);
     btnCapture.setOnClickListener(CaptureButtonListener);
     btnBackPreview.setOnClickListener(backPreviewListener);
     btnCaptureComplete.setOnClickListener(captureCompleteListener);
+    btnInfoDelete.setOnClickListener(deleteInfoListener);
 
   }
 
@@ -187,13 +195,14 @@ public class FaceActivity extends AppCompatActivity {
 
     //recyclerView item 넣어주기
     ArrayList<FaceMaskItem> faceMaskItems = new ArrayList<>();
-    faceMaskItems.add(new FaceMaskItem(R.drawable.question_mark));
-    faceMaskItems.add(new FaceMaskItem(R.drawable.flower));
-    faceMaskItems.add(new FaceMaskItem(R.drawable.facemask02));
-    faceMaskItems.add(new FaceMaskItem(R.drawable.pig_nose));
-    faceMaskItems.add(new FaceMaskItem(R.drawable.dog));
-    faceMaskItems.add(new FaceMaskItem(R.drawable.mustache));
-    faceMaskItems.add(new FaceMaskItem(R.drawable.happy_star));
+    faceMaskItems.add(new FaceMaskItem(R.drawable.eyemask)); // eyeMask
+    faceMaskItems.add(new FaceMaskItem(R.drawable.facemask02)); // 병아리
+    faceMaskItems.add(new FaceMaskItem(R.drawable.dog)); // 강아지
+    faceMaskItems.add(new FaceMaskItem(R.drawable.flower)); // 웃을때 꽃
+    faceMaskItems.add(new FaceMaskItem(R.drawable.question_mark)); // 머리 기울일때 물음표
+    faceMaskItems.add(new FaceMaskItem(R.drawable.pig_nose)); // 돼지코
+    faceMaskItems.add(new FaceMaskItem(R.drawable.mustache)); // 콧수염
+    faceMaskItems.add(new FaceMaskItem(R.drawable.happy_star)); // 눈
 
     //recyclerView layoutManager set (가로 스크롤 설정)
     recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -250,16 +259,19 @@ public class FaceActivity extends AppCompatActivity {
   /**화면 캡쳐 버튼*/
   private View.OnClickListener CaptureButtonListener = new View.OnClickListener(){
     public void onClick(View view) {
-      Log.e("click","");
 
-      // preview에서 얼굴만 나오는 부분 캡쳐했음
-      /**TODO : capture() 메소드에서 얼굴을 가져왔으니 여기서 bitmap 받아서 imageview에 뿌려주고(찍힌거 확인하는 imageview)
-       * TODO : Overlay 에 띄워주는 애 따로 가져와서 얼굴그려주는 imageview 위에 그려준다. 그 후에 사진을 사용한다고 하면 미리보기 화면을 캡쳐해서 그 파일을 프로필 사진으로 사용
-      */
-      mPreview.capture();
+      Intent intent = new Intent(context, MainActivity.class);
+      startActivity(intent);
+      Toast.makeText(context,"입장하셨습니다",Toast.LENGTH_LONG).show();
 
+    }
+  };
 
-
+  /** info 화면 삭제 */
+  private View.OnClickListener deleteInfoListener = new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+      infoLayout.setVisibility(View.GONE);
     }
   };
 

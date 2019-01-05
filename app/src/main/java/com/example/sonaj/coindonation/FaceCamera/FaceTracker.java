@@ -135,7 +135,7 @@ class FaceTracker extends Tracker<Face> {
 
     // See if there's a smile!
     // Determine if person is smiling.
-    final float SMILING_THRESHOLD = 0.8f;
+    final float SMILING_THRESHOLD = 0.2f;
     mFaceData.setSmiling(face.getIsSmilingProbability() > SMILING_THRESHOLD);
     mFaceGraphic.update(mFaceData);
   }

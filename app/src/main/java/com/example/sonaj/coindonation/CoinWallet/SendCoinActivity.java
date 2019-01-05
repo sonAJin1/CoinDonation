@@ -57,16 +57,15 @@ public class SendCoinActivity extends AppCompatActivity {
     final Context context = this;
 
     OnClick onClick;
-    private ToastMsg toastMsg;
     IntentIntegrator qrScan;
     private SendingEther sendingEther;
     private SendingToken sendingToken;
     private Web3j mWeb3j;
     private BigInteger mGasPrice;
     private BigInteger mGasLimit;
-    private Credentials mCredentials;
 
-    String coinType;
+    String coinType; //이더리움인지 개인코인인지
+    String sendAddress;
 
 
     @Override
@@ -80,18 +79,25 @@ public class SendCoinActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         coinType = intent.getExtras().getString("type");
-        binding.tvWalletTitleName.setText(coinType);
 
+        //AR 에서 동전 클릭해서 넘어올때는 주소도 함께 넘어옴
+        if(intent.getExtras().getString("QRAddress")!=null){
+            sendAddress = intent.getExtras().getString("QRAddress");
+            binding.sendtoaddress.setText(sendAddress);
+        }
+
+        binding.tvWalletTitleName.setText(coinType); // 어떤 코인을 보내는지 title 에 표시
+        setCoinSymbol(); //보내는 코인 종류에 따라서 단위 다르게
     }
 
     public void init(){
-        toastMsg = new ToastMsg();
         //뷰 클릭 메소드 xml 과 연결
         onClick = new OnClick();
         binding.setOnClick(onClick);
         qrScan = new IntentIntegrator(this);
-        binding.sbGasLimit.setOnSeekBarChangeListener(seekBarChangeListenerGL);
-        binding.sbGasPrice.setOnSeekBarChangeListener(seekBarChangeListenerGP);
+//        binding.sbGasLimit.setOnSeekBarChangeListener(seekBarChangeListenerGL);
+//        binding.sbGasPrice.setOnSeekBarChangeListener(seekBarChangeListenerGP);
+
 
     }
 
@@ -100,20 +106,18 @@ public class SendCoinActivity extends AppCompatActivity {
         new Initiate(mNodeUrl);
         mWeb3j = Initiate.sWeb3jInstance;
     }
-
-
-
     public void GetFee(){
         setGasPrice(getGasPrice());
         setGasLimit(getGasLimit());
 
         BigDecimal fee = BigDecimal.valueOf(mGasPrice.doubleValue()*mGasLimit.doubleValue());
         BigDecimal feeresult = Convert.fromWei(fee.toString(),Convert.Unit.ETHER);
-        binding.tvFee.setText(feeresult.toPlainString() + " ETH");
+       // binding.tvFee.setText(feeresult.toPlainString() + " ETH");
     }
 
     private String getGasPrice(){
-        return binding.tvGasPrice.getText().toString();
+        return String.valueOf("275000000000");
+    //    return binding.tvGasPrice.getText().toString();
     }
 
     private void setGasPrice(String gasPrice){
@@ -121,7 +125,8 @@ public class SendCoinActivity extends AppCompatActivity {
     }
 
     private String getGasLimit() {
-        return binding.tvGasLimit.getText().toString();
+        return "2000000";
+//        return binding.tvGasLimit.getText().toString();
     }
 
     private void setGasLimit(String gasLimit){
@@ -144,26 +149,6 @@ public class SendCoinActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-    /* Sending */
-//    private void sendEther(){
-//        sendingEther = new SendingEther(mWeb3j,
-//                mCredentials,
-//                getGasPrice(),
-//                getGasLimit());
-//        sendingEther.registerCallBack(this);
-//        sendingEther.Send(getToAddress(),getSendEtherAmmount());
-//    }
-//
-//
-//    private void sendToken(){
-//        sendingToken = new SendingToken(mWeb3j,
-//                mCredentials,
-//                getGasPrice(),
-//                getGasLimit());
-//        sendingToken.registerCallBackToken(this);
-//        sendingToken.Send(mSmartcontract,getToAddress(),getSendTokenAmmount());
-//    }
-//
     private String getToAddress(){
         return binding.sendtoaddress.getText().toString();
     }
@@ -173,9 +158,6 @@ public class SendCoinActivity extends AppCompatActivity {
         return binding.etSendCoinValue.getText().toString();
     }
 
-//    private String getSendTokenAmmount(){
-//        return binding.SendTokenValue.getText().toString();
-//    }
     /* End Sending */
 
     /* SeekBar Listener */
@@ -197,14 +179,22 @@ public class SendCoinActivity extends AppCompatActivity {
     };
 
     public void GetGasLimit(String value) {
-         binding.tvGasLimit.setText(value);
+     //    binding.tvGasLimit.setText(value);
         GetFee();
     }
     public void GetGasPrice(String value) {
-         binding.tvGasPrice.setText(value);
+     //    binding.tvGasPrice.setText(value);
         GetFee();
     }
     /* End SeekBar Listener */
+
+    public void setCoinSymbol(){
+        if(coinType.equals("ETHEREUM")){
+            binding.tvCoinSymbol.setText("ETH");
+        }else{
+            binding.tvCoinSymbol.setText("AJT");
+        }
+    }
 
 
     public class OnClick {

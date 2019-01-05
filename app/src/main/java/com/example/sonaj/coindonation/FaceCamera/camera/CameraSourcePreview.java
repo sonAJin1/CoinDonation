@@ -16,10 +16,12 @@
 
 package com.example.sonaj.coindonation.FaceCamera.camera;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +33,8 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -40,6 +44,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.sonaj.coindonation.FaceCamera.FacePreviewActivity;
+import com.example.sonaj.coindonation.R;
 import com.google.android.gms.common.images.Size;
 import com.google.android.gms.vision.CameraSource;
 
@@ -72,7 +77,6 @@ public class CameraSourcePreview extends ViewGroup {
     mSurfaceView = new SurfaceView(context);
     mSurfaceView.getHolder().addCallback(new SurfaceCallback());
 
-
     addView(mSurfaceView);
   }
 
@@ -96,19 +100,30 @@ public class CameraSourcePreview extends ViewGroup {
 
   public void stop() {
     if (mCameraSource != null) {
-        mCameraSource.stop();
+      mCameraSource.stop();
     }
   }
 
   public void release() {
     if (mCameraSource != null) {
-        mCameraSource.release();
-        mCameraSource = null;
+      mCameraSource.release();
+      mCameraSource = null;
     }
   }
 
   private void startIfReady() throws IOException {
+
     if (mStartRequested && mSurfaceAvailable) {
+      if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        // TODO: Consider calling
+        //    ActivityCompat#requestPermissions
+        // here to request the missing permissions, and then overriding
+        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+        //                                          int[] grantResults)
+        // to handle the case where the user grants the permission. See the documentation
+        // for ActivityCompat#requestPermissions for more details.
+        return;
+      }
       mCameraSource.start(mSurfaceView.getHolder());
       if (mOverlay != null) {
         Size size = mCameraSource.getPreviewSize();

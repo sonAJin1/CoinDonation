@@ -5,9 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
-    <color name="mainColor">#fe6f5f</color>
-    <color name="backgroundColor">#dadada</color>
-    <color name="loadingBackground">#9e000000</color>
+    <color name="mainColor">#ea4634</color>
+    <color name="mainColorSub">#57fe6f5f</color>
+    <color name="backgroundColor">#f9f9f9</color>
+    <color name="loadingBackground">#ac000000</color>
 
 
 

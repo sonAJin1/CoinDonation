@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
-    android:background="@drawable/round_rect">
+    android:background="@drawable/round_rect"
+    android:elevation="3dp">
 
     <!--<TextView-->
         <!--android:id="@+id/tv_transfer_date"-->
@@ -52,10 +53,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_transfer_coin_name"
         android:text="전송중"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
+        android:fontFamily="@font/nanum_bold"
         android:textColor="@color/black"
         android:layout_toRightOf="@+id/rl_coin_image"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="15dp"
         />
 
@@ -86,12 +88,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="-100"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
+        android:fontFamily="@font/nanum_bold"
         android:layout_centerVertical="true"
         android:layout_alignBottom="@+id/tv_transfer_status"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
+        android:layout_marginTop="5dp"
         android:textColor="@color/black" />
 
     <TextView

@@ -4,28 +4,175 @@
         <import type="android.view.View"/>
         <variable name="onClick" type="com.example.sonaj.coindonation.Main.firstView.OnClick"/>
     </data>
+
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-    <ImageView
-        android:id="@+id/iv_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@color/black"
-        android:onClick="@{onClick::showFaceCamera}"
-        android:layout_centerInParent="true"
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AR"
+        android:textSize="27dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="60dp"
         />
 
+    <View
+        android:id="@+id/view_divider"
+        android:layout_height="7dp"
+        android:layout_width="35dp"
+        android:background="@color/black"
+        android:layout_below="@+id/tv_title"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="25dp"
+
+        />
+
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_profile"-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:background="@drawable/black_stroke_circle"-->
+        <!--android:onClick="@{onClick::showFaceCamera}"-->
+        <!--android:layout_marginTop="100dp"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--/>-->
+
+    <TextView
+        android:id="@+id/tv_main_title01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="토큰"
+        android:textSize="38sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/view_divider"
+        android:fontFamily="@font/nanum_bold"
+        />
+    <TextView
+        android:id="@+id/tv_main_title01_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="으로"
+        android:textSize="38sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@+id/tv_main_title01"
+        android:layout_alignBottom="@+id/tv_main_title01"
+        android:fontFamily="@font/nanum"
+        />
+    <TextView
+        android:id="@+id/tv_main_title02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="후원"
+        android:textSize="38sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/tv_main_title01"
+        android:fontFamily="@font/nanum_bold"
+        />
+
+    <TextView
+        android:id="@+id/tv_main_title02_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="할 공연을"
+        android:textSize="38sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="3dp"
+        android:layout_below="@+id/tv_main_title01"
+        android:layout_toRightOf="@+id/tv_main_title02"
+        android:fontFamily="@font/nanum"
+        />
+
+    <TextView
+        android:id="@+id/tv_main_title03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="찾아보세요"
+        android:textSize="38sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="140dp"
+        android:layout_below="@+id/tv_main_title02"
+        android:fontFamily="@font/nanum"
+        />
+
+    <!--<TextView-->
+        <!---->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="AR로 공연 영상을 보고 토큰으로 후원하세요"-->
+        <!--android:fontFamily="@font/nanum"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_below="@+id/tv_main_title03"-->
+        <!--/>-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_below="@+id/tv_main_title03">
+
+        <Button
+            android:id="@+id/ib_ar"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="3"
+            android:layout_marginRight="5dp"
+            android:onClick="@{onClick::showAR}"
+            android:layout_below="@+id/tv_main_title03"
+            android:text="후원할 공연 찾기"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nanum_bold"
+            android:background="@drawable/round_rect_main_color"
+            />
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:background="@drawable/round_rect_main_color"
+            android:backgroundTint="@color/black"
+            android:src="@drawable/face_icon"
+            android:onClick="@{onClick::showFaceCamera}"
+            />
+
+
+    </LinearLayout>
+
     <ImageView
-        android:id="@+id/wallet_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:background="@drawable/face_icon"
+        android:layout_marginTop="35dp"
+        android:layout_marginRight="45dp"
+        android:backgroundTint="@color/white"
         android:layout_alignParentRight="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_account_balance_wallet_black_24dp"
-        android:onClick="@{onClick::showWallet}"
-        />
+        android:layout_below="@+id/tv_main_title03"/>
+
+    <!--<ImageView-->
+        <!--android:id="@+id/wallet_icon"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_margin="10dp"-->
+        <!--android:src="@drawable/ic_account_balance_wallet_black_24dp"-->
+        <!--android:onClick="@{onClick::showWallet}"-->
+        <!--/>-->
 </RelativeLayout>
 </layout>

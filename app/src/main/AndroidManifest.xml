@@ -17,15 +17,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Main.MainActivity">
+        <activity android:name=".FaceCamera.FaceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FaceCamera.FaceActivity" />
+        <activity android:name=".Main.MainActivity" />
         <activity android:name=".CoinWallet.TestCoinWalletView" />
+        <activity android:name=".FaceCamera.FacePreviewActivity" />
+        <activity android:name=".CoinWallet.SendCoinActivity" />
+        <activity android:name=".AR.UnityPlayerActivity"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -37,8 +40,8 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".FaceCamera.FacePreviewActivity" />
-        <activity android:name=".CoinWallet.SendCoinActivity"></activity>
+
+
     </application>
 
 </manifest>

@@ -20,7 +20,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.sonaj.coindonation.AR.UnityPlayerActivity;
 import com.example.sonaj.coindonation.CoinWallet.CoinWalletView;
+import com.example.sonaj.coindonation.CoinWallet.SendCoinActivity;
 import com.example.sonaj.coindonation.Data.DBHelper;
 import com.example.sonaj.coindonation.R;
 import com.example.sonaj.coindonation.Util.MultiViewActivity;
@@ -49,6 +51,7 @@ public class MainActivity extends MultiViewActivity {
     //View list
     CoinWalletView coinWalletView;
     firstView firstView;
+    UnityPlayerActivity unityPlayerActivity;
 
     // View 의 위치를 나타내는 값
     final int POSITION_SALON_View = 0;
@@ -90,13 +93,32 @@ public class MainActivity extends MultiViewActivity {
 
         /**초기화*/
         init();
+
     }
 
 
     public void init(){
-        //사용자들이 선택해서 보여질 VIEW
+        /**사용자들이 선택해서 보여질 VIEW
+         * AR에서 MAIN을 호출할 때와 아닐때를 구분해서 coinWalletView를 만들어준다*/
         firstView = new firstView(this, binding.appBarContent.viewFirst);
-        coinWalletView = new CoinWalletView(this, binding.appBarContent.viewWallet);
+
+        //sendCoinActivity 에서 unityPlayerActivity 로 보낸 후 main 으로 넘겨기
+        Intent intent = getIntent();
+        if(intent!=null){
+            String gasPrice = intent.getStringExtra("gasPrice");
+            String gasLimit = intent.getStringExtra("gasLimit");
+            String toAddress = intent.getStringExtra("toAddress");
+            String sendTokenAmmount = intent.getStringExtra("sendAmmount");
+            if(sendTokenAmmount!=null){
+                coinWalletView = new CoinWalletView(this, binding.appBarContent.viewWallet,gasPrice,gasLimit,toAddress,sendTokenAmmount,true);
+//                unityPlayerActivity = UnityPlayerActivity.unityPlayerActivity;
+//                unityPlayerActivity.finish();
+
+            }else{
+                /** 맨 처음 앱을 실행했을때 (AR 에서 호출X)*/
+                coinWalletView = new CoinWalletView(this, binding.appBarContent.viewWallet);
+            }
+        }
 
 
         //네비게이션 바
@@ -114,17 +136,21 @@ public class MainActivity extends MultiViewActivity {
         //sqlite 생성
         dbHelper = new DBHelper(context,"WalletAddress02.db",null,1);
 
+
+
+
+
     }
 
     public class OnClick {
 
-        // 살롱 화면 보여주기
+        // 홈 화면 보여주기
         public void showHome() {
             setView(POSITION_SALON_View);
           //  firstView.setPostView(); // 화면을 보여줄 때 서버에서 데이터 가져오기
         }
 
-        // 콘텐츠 추천 화면 보여주기
+        // 지갑 화면 보여주기
         public void showWallet() {
             if(currentViewPosition!=POSITION_CONTENTS_VIEW) {
                 setView(POSITION_CONTENTS_VIEW);
@@ -146,13 +172,16 @@ public class MainActivity extends MultiViewActivity {
             switch (requestCode) {
                 // SendCoinActivity 에서 요청할 때 보낸 요청 코드 (1)
                 case 0: //이더리움
-                    Toast.makeText(this,"eth",Toast.LENGTH_LONG).show();
+                   // Toast.makeText(this,"eth",Toast.LENGTH_LONG).show();
                     coinWalletView.sendEther(gasPrice,gasLimit,toAddress,sendTokenAmmount);
                     break;
                 case 1: //토큰
-                   Toast.makeText(this,"token",Toast.LENGTH_LONG).show();
+                 //  Toast.makeText(this,"token",Toast.LENGTH_LONG).show();
                    coinWalletView.sendToken(gasPrice,gasLimit,toAddress,sendTokenAmmount);
                     break;
+                case 2: // AR에서 후원을 하고 넘어온 값
+                  //  Toast.makeText(this,"token",Toast.LENGTH_LONG).show();
+                    coinWalletView.sendToken(gasPrice,gasLimit,toAddress,sendTokenAmmount);
             }
         }
     }

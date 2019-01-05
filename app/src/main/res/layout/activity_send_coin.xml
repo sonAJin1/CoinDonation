@@ -13,7 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CoinWallet.SendCoinActivity"
-    android:background="@color/backgroundColor">
+    android:background="@color/backgroundColor"
+    >
 
     <TextView
         android:id="@+id/tv_wallet_title_name"
@@ -21,9 +22,9 @@
         android:layout_height="wrap_content"
         android:text="ETH"
         android:textStyle="bold"
-        android:textSize="35dp"
+        android:textSize="40dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:textColor="@color/black"
         />
 
@@ -32,11 +33,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="보내기"
-        android:textStyle="bold"
-        android:textSize="35dp"
+        android:fontFamily="@font/nanum_bold"
+        android:textSize="40dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="-5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="60dp"
         android:layout_below="@+id/tv_wallet_title_name"
         android:textColor="@color/black"
         />
@@ -51,162 +52,56 @@
         android:layout_marginLeft="25dp"
         android:onClick="@{onClick::back}"
         />
-    <LinearLayout
-        android:id="@+id/LayoutFee"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:orientation="vertical"
-        android:background="@drawable/round_rect"
-        android:padding="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_below="@+id/ll_send">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/LayoutFee"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:orientation="vertical"-->
+        <!--android:background="@drawable/round_rect_point"-->
+        <!--android:padding="20dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:layout_below="@+id/ll_send">-->
 
-        <TextView
-            android:id="@+id/tv_transaction_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="전송 수수료"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="10dp"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/tv_transaction_title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="전송 수수료"-->
+            <!--android:fontFamily="@font/nanum_bold"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
-            android:gravity="left|center_vertical"
-            android:orientation="horizontal">
+      <!---->
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_tx_free"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="left|center_vertical"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--&gt;-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="3dp"-->
+                <!--android:text="TX Fee: "-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"/>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:gravity="left|center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gas Limit: "
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_gas_limit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:keyboardNavigationCluster="false"
-                    android:numeric="integer"
-                    android:text="2000000"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:orientation="horizontal">
-
-                <SeekBar
-                    android:id="@+id/sb_gas_limit"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:max="21"
-                    android:min="0"
-                    android:progress="0" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
-            android:gravity="left|center_vertical"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:gravity="left|center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gas Price: "
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_gas_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:numeric="integer"
-                    android:text="12"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" Gwei"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
-                android:gravity="right|center_vertical"
-                android:orientation="vertical">
-
-                <SeekBar
-                    android:id="@+id/sb_gas_price"
-                    style="@style/Widget.AppCompat.SeekBar.Discrete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="18" />
-
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_tx_free"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left|center_vertical"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:text="TX Fee: "
-                android:textSize="14sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/tv_fee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:numeric="integer"
-                android:text="0"
-                android:textSize="14sp"
-                android:textStyle="bold"/>
-        </LinearLayout>
-    </LinearLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/tv_fee"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:numeric="integer"-->
+                <!--android:text="0"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold"/>-->
+        <!--</LinearLayout>-->
+    <!--</LinearLayout>-->
 
 
     <LinearLayout
@@ -223,7 +118,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="받는이"
-            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/nanum_bold"
             android:textColor="@color/black"/>
 
         <LinearLayout
@@ -238,6 +135,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="지갑주소를 입력해주세요"
+                android:fontFamily="@font/nanum"
                 android:inputType="textPersonName" />
 
             <Button
@@ -253,8 +151,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="수량"
-            android:textStyle="bold"
+            android:fontFamily="@font/nanum_bold"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/black"/>
 
         <LinearLayout
@@ -268,12 +167,15 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/nanum_bold"
                 android:text="1" />
 
             <TextView
+                android:id="@+id/tv_coin_symbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ETH"
+                android:fontFamily="@font/nanum_bold"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -317,13 +219,14 @@
     <Button
         android:id="@+id/btn_send_coin"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:text="보내기"
+        android:textSize="15sp"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:background="@color/black"
+        android:fontFamily="@font/nanum_bold"
+        android:layout_margin="20dp"
+        android:background="@drawable/round_rect_main_color"
         android:onClick="@{onClick::sendCoin}"/>
 </RelativeLayout>
 </layout>

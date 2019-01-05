@@ -74,7 +74,7 @@ class FaceGraphic extends GraphicOverlay.Graphic {
   private Drawable mRoundFlower;
   private Drawable mRoundFlowerSmile;
   private Drawable mFaceMask;
-
+  private Drawable mEyeMask;
 
   // We want each iris to move independently,
   // so each one gets its own physics engine.
@@ -104,6 +104,7 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     mRoundFlower = resources.getDrawable(R.drawable.flower_round_01);
     mRoundFlowerSmile = resources.getDrawable(R.drawable.flower_round_02);
     mFaceMask = resources.getDrawable(R.drawable.facemask);
+    mEyeMask = resources.getDrawable(R.drawable.eyemask);
   }
 
   private void initializePaints(Resources resources) {
@@ -218,36 +219,30 @@ class FaceGraphic extends GraphicOverlay.Graphic {
     float eyeRadius = EYE_RADIUS_PROPORTION * distance;
     float irisRadius = IRIS_RADIUS_PROPORTION * distance;
 
-    if(maskType==0){ // 마스크 리스트에서 물음표를 선택한 경우
-      // Draw the hat only if the subject's head is titled at a
-      // sufficiently jaunty angle.
-      final float HEAD_TILT_HAT_THRESHOLD = 20.0f;
-      if (Math.abs(eulerZ) > HEAD_TILT_HAT_THRESHOLD) {
-        drawQuestion(canvas, position, width, height, noseBasePosition);
-      }
-    }else if(maskType==1){ // 마스크 리스트에서 꽃을 선택한 경우
-      drawRoundFlower(canvas, position, width, height, noseBasePosition,smiling);
-      drawSmail(canvas, position, width, height, noseBasePosition,smiling);
-    }else if(maskType==2){ // 마스크 리스트에서 병아리를 선택한 경우
+    if(maskType==0){ // eyeMask
+      drawEyeMask(canvas, position, width, height, noseBasePosition);
+    }else if(maskType==1){ // 병아리
       drawFaceMask(canvas, position, width, height, noseBasePosition);
       PointF leftIrisPosition = mLeftPhysics.nextIrisPosition(leftEyePosition, eyeRadius, irisRadius);
       drawEye(canvas, leftEyePosition, eyeRadius, leftIrisPosition, irisRadius, leftEyeOpen, smiling);
       PointF rightIrisPosition = mRightPhysics.nextIrisPosition(rightEyePosition, eyeRadius, irisRadius);
       drawEye(canvas, rightEyePosition, eyeRadius, rightIrisPosition, irisRadius, rightEyeOpen, smiling);
-    }
-    else if(maskType==3){ // 마스크 리스트에서 돼지코를 선택한 경우
-      // Draw the nose.
-      drawNose(canvas, noseBasePosition, leftEyePosition, rightEyePosition, width);
-    }
-    else if(maskType==4){ // 마스크 리스트에서 강아지를 선택한 경우
+    }else if(maskType==2){ // 강아지
       drawdogNose02(canvas, noseBasePosition, mouthLeftPosition, mouthRightPosition, mouthBottomPosition);
       drawDogEar(canvas, position, width, height, noseBasePosition);
-    }
-    else if(maskType==5){ // 마스크 리스트에서 콧수염을 선택한 경우
-      // Draw the mustache.
-      drawMustache(canvas, noseBasePosition, mouthLeftPosition, mouthRightPosition);
-    }else if(maskType==6){ // 마스크 리스트에서 별을 선택한 경우
-      // Draw the eyes.
+    }else if(maskType==3){ // 꽃
+      drawRoundFlower(canvas, position, width, height, noseBasePosition,smiling);
+      drawSmail(canvas, position, width, height, noseBasePosition,smiling);
+    }else if(maskType==4) { // 물음푶
+      final float HEAD_TILT_HAT_THRESHOLD = 20.0f;
+      if (Math.abs(eulerZ) > HEAD_TILT_HAT_THRESHOLD) {
+        drawQuestion(canvas, position, width, height, noseBasePosition);
+      }
+    }else if(maskType==5){ // 돼지코
+        drawNose(canvas, noseBasePosition, leftEyePosition, rightEyePosition, width);
+    }else if(maskType==6){ // 콧수염
+        drawMustache(canvas, noseBasePosition, mouthLeftPosition, mouthRightPosition);
+    }else if(maskType==7){ // 눈
       PointF leftIrisPosition = mLeftPhysics.nextIrisPosition(leftEyePosition, eyeRadius, irisRadius);
       drawEye(canvas, leftEyePosition, eyeRadius, leftIrisPosition, irisRadius, leftEyeOpen, smiling);
       PointF rightIrisPosition = mRightPhysics.nextIrisPosition(rightEyePosition, eyeRadius, irisRadius);
@@ -259,22 +254,32 @@ class FaceGraphic extends GraphicOverlay.Graphic {
   // Cartoon feature draw routines
   // =============================
 
+  private void drawEyeMask(Canvas canvas, PointF facePosition, float faceWidth, float faceHeight, PointF noseBasePosition) {
+    final float HAT_FACE_WIDTH_RATIO = (float) 1.0;
+    final float HAT_FACE_HEIGHT_RATIO = (float) 0.7;
+    final float HAT_CENTER_Y_OFFSET_FACTOR = (float) 0.9;
+
+    float hatCenterY = facePosition.y + (faceHeight * HAT_CENTER_Y_OFFSET_FACTOR);
+    float hatWidth = faceWidth * HAT_FACE_WIDTH_RATIO;
+    float hatHeight = faceHeight * HAT_FACE_HEIGHT_RATIO;
+
+    int left = (int) (noseBasePosition.x - (hatWidth / 2));
+    int right = (int) (noseBasePosition.x + (hatWidth / 2));
+    int top = (int) (hatCenterY - (hatHeight));
+    int bottom = (int) (hatCenterY + (hatHeight / 4));
+
+    mEyeMask.setBounds(left, top, right, bottom);
+    mEyeMask.draw(canvas);
+  }
+
   private void drawEye(Canvas canvas,
                        PointF eyePosition, float eyeRadius,
                        PointF irisPosition, float irisRadius,
                        boolean eyeOpen, boolean smiling) {
     if (eyeOpen) {
       canvas.drawCircle(eyePosition.x, eyePosition.y, eyeRadius, mEyeWhitePaint);
-      if (smiling) {
-        mHappyStarGraphic.setBounds(
-          (int)(irisPosition.x - irisRadius),
-          (int)(irisPosition.y - irisRadius),
-          (int)(irisPosition.x + irisRadius),
-          (int)(irisPosition.y + irisRadius));
-        mHappyStarGraphic.draw(canvas);
-      } else {
-        canvas.drawCircle(irisPosition.x, irisPosition.y, irisRadius, mIrisPaint);
-      }
+      canvas.drawCircle(irisPosition.x, irisPosition.y, irisRadius, mIrisPaint);
+
     } else {
       canvas.drawCircle(eyePosition.x, eyePosition.y, eyeRadius, mEyelidPaint);
       float y = eyePosition.y;
